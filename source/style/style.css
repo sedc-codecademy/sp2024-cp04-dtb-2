@@ -1,0 +1,60 @@
+nav {
+    text-align: right ;
+    background-color: beige;
+}
+#result {
+    border-radius: 10px;
+    padding: 1rem;
+    max-width: min-content;
+    max-height: min-content;
+    display: grid;
+    gap: 1rem;
+    grid-template: auto / repeat(1, 1fr); 
+    grid-auto-flow: row;
+    margin-left: 20vw;
+}
+.card-title{
+    font-size: larger;
+    font-weight: bold;
+    
+}
+.post-link{
+    text-decoration: none;
+}
+hr.post-line{
+    border:2px solid;
+    border-radius: 2px;
+}
+
+#filterIcon {
+    display: flex;
+    align-items: center;
+    padding-right: 0%;
+    justify-content: end;
+    margin: 1%;
+}
+
+.dark-mode {
+    background-color: #222223;
+    color: white;
+  }
+
+
+  body.dark-mode {
+    background-color: #222223;
+    color: white;
+}
+
+.navbar-dark-mode {
+    background-color: #333 !important;
+    border-color: #333;
+}
+
+body.dark-mode .navbar {
+    background-color: #333 !important;
+    color: white;
+}
+
+body.dark-mode .navbar-nav .nav-link {
+    color: white !important;
+}
