@@ -1,0 +1,32 @@
+#filterIcon {
+    display: flex;
+    align-items: center;
+    padding-right: 0%;
+    justify-content: end;
+    margin: 1%;
+}
+
+.dark-mode {
+    background-color: black;
+    color: white;
+  }
+
+
+  body.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+.navbar-dark-mode {
+    background-color: #333 !important;
+    border-color: #333;
+}
+
+body.dark-mode .navbar {
+    background-color: #333 !important;
+    color: white;
+}
+
+body.dark-mode .navbar-nav .nav-link {
+    color: white !important;
+}
