@@ -20,11 +20,11 @@ class PostService {
             `
             <div class="card" style="width: 55vw">
                 <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: fit-content; max-height: fit-content;" alt="Image should be here">
-                <div class="card-body title">
-                <h6></h6>
-                <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
-                    <p class="card-text">Do you want to read more?</p>
-                </div>
+                    <div class="card-body title">
+                        <h6></h6>
+                        <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
+                        <p class="card-text">Do you want to read more?</p>
+                    </div>
                 </div>
                 <hr class="post-line">
             `;

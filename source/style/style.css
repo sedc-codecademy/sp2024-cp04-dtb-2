@@ -58,3 +58,10 @@ body.dark-mode .navbar {
 body.dark-mode .navbar-nav .nav-link {
     color: white !important;
 }
+#filterDiv {
+    display: flex;
+    align-items: center;
+    padding-right: 0%;
+    justify-content: end;
+    margin: 1%;
+}
