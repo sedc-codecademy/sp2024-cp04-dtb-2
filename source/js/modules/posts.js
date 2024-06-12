@@ -1,6 +1,5 @@
 import { Post } from "./post.js";
-import {Users} from "./users.js";
-const users = new Users();
+
 export class Posts {
     constructor(){
         this.storage = [];
