@@ -11,31 +11,62 @@ class PostService {
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
     }
-    renderPosts = (posts) => {
-        this.result.innerHTML = '';
+    
+        initialPosts = 12;
+        loadPosts = 12;
+        rowCounter =0;
+        idCounter = 0;
+        loadedPosts = [];
+        
 
-        let copy = [...posts];
-        copy.forEach(x => {
-            this.result.innerHTML += 
-            `
-            <div class="card" style="width: 55vw">
-                <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
-                <div class="card-body title">
-                <h6></h6>
-                <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
-                    <p class="card-text">Do you want to read more?</p>
-                </div>
-                </div>
-                <hr class="post-line">
-            `;
-        });
-    }
+        renderPosts = (posts) => {
+            let copies = [...posts];
+            
+            this.counter = 0;
+         
+            for (let x of copies) {
+                if (this.counter % 3 === 0 && this.counter < this.initialPosts) {
+                    this.result.innerHTML += `
+                        <div class="row rowsOfCards" id="rowOfCards-${Math.floor(this.rowCounter / 3)}"> 
+                        </div>
+                        <hr class="post-line">
+                    `;
+                }
+    
+                if (this.counter < this.initialPosts) {
+                    let currentRow = document.getElementById(`rowOfCards-${Math.floor(this.rowCounter / 3)}`);
+                    currentRow.innerHTML += `
+                        <div class="card" style="width: 25vw" id="card-${this.idCounter}">
+                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
+                            <div class="card-body title">
+                                <h6></h6>
+                                <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
+                                <p class="card-text">Do you want to read more?</p>
+                            </div>
+                        </div>  
+                    `;
+    
+                    this.loadedPosts.push(x);
+                    this.idCounter++;
+                }
+                this.rowCounter++;
+                this.counter++;
+            }
+        }
+
+        loadMore = (posts) => {
+            let postsToLoad = posts.filter(post => !this.loadedPosts.includes(post));
+            this.renderPosts(postsToLoad.slice(0, this.loadPosts));
+        }
     writePosts = (postData)=> {
         for (const item of postData) {
             posts.newPost(`${item.imgSrc}.jpg`, item.title, item.text, item.tags, users.storage[`${item.authorId}`],new Date(item.postingTime));
         }
     }
 }
+document.getElementById("loadMoreBtn").addEventListener("click", () => {
+    postService.loadMore(posts.storage);
+});
 
 const users = new Users();
 const posts = new Posts();
@@ -59,6 +90,5 @@ posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and 
 
 postService.renderPosts(posts.storage);
 posts.printPosts();
-
 
 users.printUsers();
