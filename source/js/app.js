@@ -10,7 +10,22 @@ class PostService {
         this.searchBtn = document.getElementById('searchBtn');
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
+        this.loadingIndicator = document.getElementById('loadIndicator');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+                this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
+                
+                this.setTimeout(() => {
+                    postService.loadingIndicator.style.visibility = 'hidden';
+                    postService.loadMore(posts.storage);
+                }, 1250);
+            }
+        });
+        document.getElementById("loadMoreBtn").addEventListener("click", () => {
+            PostService.loadMore(posts.storage);
+        });
     }
+    
     
         initialPosts = 12;
         loadPosts = 12;
@@ -64,9 +79,7 @@ class PostService {
         }
     }
 }
-document.getElementById("loadMoreBtn").addEventListener("click", () => {
-    postService.loadMore(posts.storage);
-});
+
 
 const users = new Users();
 const posts = new Posts();
