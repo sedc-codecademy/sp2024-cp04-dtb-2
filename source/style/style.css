@@ -77,3 +77,8 @@ main {
     display: flex;
     flex-direction: row;
 }
+#dropdownMenuButton {
+    background-color: white;
+    border: 0;
+    color: black;
+}

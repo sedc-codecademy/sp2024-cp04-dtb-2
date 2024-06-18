@@ -12,5 +12,5 @@ export class Posts {
         let newPost = new Post(postId, imgSrc, title, postText, tags, authorId, postingTime);
         if(!newPost) return "Invalid entries"; else this.storage.push(newPost);
     }
-    printPosts = () => this.storage.forEach(x => console.log(`id: ${x.id}\ntitle: ${x.title}\ncontent: ${x.text}\ndate created: ${x.postingTime}\nCreated by: ${x.authorId.fullName()}`));
+    printPosts = () => this.storage.forEach(x => console.log(`id: ${x.id}\ntitle: ${x.title}\ncontent: ${x.text}\ndate created: ${x.postingTime}\ntags: ${x.tags}\nCreated by: ${x.authorId.fullName()}`));
 }

@@ -1,6 +1,7 @@
 import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
+import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts } from "./modules/filter.js";
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -11,7 +12,7 @@ class PostService {
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
     }
-    
+        selectedFilter = "newPostLoader";
         initialPosts = 12;
         loadPosts = 12;
         rowCounter =0;
@@ -21,30 +22,50 @@ class PostService {
 
         renderPosts = (posts) => {
             let copies = [...posts];
-            
+            console.log(posts)
+            console.log("second posts")
             this.counter = 0;
          
             for (let x of copies) {
-                if (this.counter % 3 === 0 && this.counter < this.initialPosts) {
-                    this.result.innerHTML += `
-                        <div class="row rowsOfCards" id="rowOfCards-${Math.floor(this.rowCounter / 3)}"> 
-                        </div>
-                        <hr class="post-line">
-                    `;
-                }
+                // if (this.counter % 3 === 0 && this.counter < this.initialPosts) {
+                //     this.result.innerHTML += `
+                //         <div class="row rowsOfCards" id="rowOfCards-${Math.floor(this.rowCounter / 3)}"> 
+                //         </div>
+                        
+                //     `;
+                // }
+                
     
                 if (this.counter < this.initialPosts) {
-                    let currentRow = document.getElementById(`rowOfCards-${Math.floor(this.rowCounter / 3)}`);
-                    currentRow.innerHTML += `
-                        <div class="card" style="width: 25vw" id="card-${this.idCounter}">
-                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
-                            <div class="card-body title">
+                    // let currentRow = document.getElementById(`rowOfCards-${Math.floor(this.rowCounter / 3)}`);
+                    // currentRow.innerHTML += ` text-bg-dark border-warning
+                    this.result.innerHTML += `
+                    <div class="card mb-3" style="width: 80rem; max-height: 50rem;" id="card-${this.idCounter}">
+                        <div class="row g-0">
+                            <div class="col-md-4 dark" style="padding: 3rem;">
+                                <img src="${x.imgSrc}" alt="Image" class="img-fluid rounded-start" style="width: 20vw; height: fit-content;">
+                             </div>
+                            <div class="col-md-8" style="padding: 1rem;">
+                                <div class="card-body">
                                 <h6></h6>
                                 <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
                                 <p class="card-text">Do you want to read more?</p>
+                                </div>
                             </div>
-                        </div>  
+                        </div>
+                    </div>
                     `;
+
+                    // currentRow.innerHTML += `
+                    //     <div class="card" style="width: 25vw" id="card-${this.idCounter}">
+                    //         <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
+                    //         <div class="card-body title">
+                    //             <h6></h6>
+                    //             <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
+                    //             <p class="card-text">Do you want to read more?</p>
+                    //         </div>
+                    //     </div>  
+                    // `;
     
                     this.loadedPosts.push(x);
                     this.idCounter++;
@@ -65,7 +86,20 @@ class PostService {
     }
 }
 document.getElementById("loadMoreBtn").addEventListener("click", () => {
-    postService.loadMore(posts.storage);
+    console.log(postService.selectedFilter)
+    if (postService.selectedFilter == "newPostsLoader") {
+        postService.loadMore(newestPosts);
+        console.log("first");
+    } else if (postService.selectedFilter == "oldPostsLoader") {
+        postService.loadMore(oldPosts);
+        console.log("second");
+    } else if (postService.selectedFilter == "mostPopularPostsLoader") {
+        postService.loadMore(mostPopularPosts);
+        console.log("third");
+    } else if (postService.selectedFilter == "showTagPosts") {
+        postService.loadMore(taggedPosts);
+        
+    }
 });
 
 const users = new Users();
@@ -89,6 +123,25 @@ posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like
 posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
 
 postService.renderPosts(posts.storage);
-posts.printPosts();
+// posts.printPosts();
 
-users.printUsers();
+// users.printUsers();
+document.getElementById("newFirst").addEventListener("click", function(){
+    newPostsLoader(posts.storage,posts.selectedFilter);
+})
+document.getElementById("oldFirst").addEventListener("click", function(){
+    oldPostsLoader(posts.storage,posts.selectedFilter);
+})
+document.getElementById("mostPopular").addEventListener("click", function(){
+    mostPopularPostsLoader(posts.storage,posts.selectedFilter);
+})
+
+document.getElementById("byTag").addEventListener("click",function(){
+    document.getElementById('tagFilterDiv').classList.toggle('d-none');
+})
+document.getElementById('tagSearchBtn').addEventListener('click', () => {
+    showTagPosts(posts.storage,posts.selectedFilter);
+});
+
+
+export {postService};
