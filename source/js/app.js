@@ -11,6 +11,32 @@ class PostService {
         this.searchBtn = document.getElementById('searchBtn');
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
+        this.loadingIndicator = document.getElementById('loadIndicator');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
+                this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
+                
+                this.setTimeout(() => {
+                    postService.loadingIndicator.style.visibility = 'hidden';
+                    if (postService.selectedFilter == "newPostsLoader") {
+                        postService.loadMore(newestPosts);
+                        console.log("first");
+                    } else if (postService.selectedFilter == "oldPostsLoader") {
+                        postService.loadMore(oldPosts);
+                        console.log("second");
+                    } else if (postService.selectedFilter == "mostPopularPostsLoader") {
+                        postService.loadMore(mostPopularPosts);
+                        console.log("third");
+                    } else if (postService.selectedFilter == "showTagPosts") {
+                        postService.loadMore(taggedPosts);
+                        
+                    } else {
+                        postService.loadMore(posts.storage);
+                    }
+                }, 1250);
+            }
+        });
     }
         selectedFilter = "newPostLoader";
         initialPosts = 12;
@@ -26,46 +52,20 @@ class PostService {
             console.log("second posts")
             this.counter = 0;
          
-            for (let x of copies) {
-                // if (this.counter % 3 === 0 && this.counter < this.initialPosts) {
-                //     this.result.innerHTML += `
-                //         <div class="row rowsOfCards" id="rowOfCards-${Math.floor(this.rowCounter / 3)}"> 
-                //         </div>
-                        
-                //     `;
-                // }
-                
+            for (let x of copies) {            
     
                 if (this.counter < this.initialPosts) {
-                    // let currentRow = document.getElementById(`rowOfCards-${Math.floor(this.rowCounter / 3)}`);
-                    // currentRow.innerHTML += ` text-bg-dark border-warning
+                         
                     this.result.innerHTML += `
-                    <div class="card mb-3" style="width: 80rem; max-height: 50rem;" id="card-${this.idCounter}">
-                        <div class="row g-0">
-                            <div class="col-md-4 dark" style="padding: 3rem;">
-                                <img src="${x.imgSrc}" alt="Image" class="img-fluid rounded-start" style="width: 20vw; height: fit-content;">
-                             </div>
-                            <div class="col-md-8" style="padding: 1rem;">
-                                <div class="card-body">
+                        <div class="card" style="width: 25vw" id="card-${this.idCounter}">
+                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
+                            <div class="card-body title">
                                 <h6></h6>
                                 <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
                                 <p class="card-text">Do you want to read more?</p>
-                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>  
                     `;
-
-                    // currentRow.innerHTML += `
-                    //     <div class="card" style="width: 25vw" id="card-${this.idCounter}">
-                    //         <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
-                    //         <div class="card-body title">
-                    //             <h6></h6>
-                    //             <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
-                    //             <p class="card-text">Do you want to read more?</p>
-                    //         </div>
-                    //     </div>  
-                    // `;
     
                     this.loadedPosts.push(x);
                     this.idCounter++;
@@ -85,7 +85,7 @@ class PostService {
         }
     }
 }
-document.getElementById("loadMoreBtn").addEventListener("click", () => {
+document.getElementById("loadMoreBtn").addEventListener("click", function () {
     console.log(postService.selectedFilter)
     if (postService.selectedFilter == "newPostsLoader") {
         postService.loadMore(newestPosts);
@@ -99,6 +99,8 @@ document.getElementById("loadMoreBtn").addEventListener("click", () => {
     } else if (postService.selectedFilter == "showTagPosts") {
         postService.loadMore(taggedPosts);
         
+    } else {
+        postService.loadMore(posts.storage);
     }
 });
 
