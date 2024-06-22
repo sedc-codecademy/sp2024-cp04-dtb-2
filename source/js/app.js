@@ -11,8 +11,9 @@ class PostService {
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
         this.loadingIndicator = document.getElementById('loadIndicator');
+
         window.addEventListener('scroll', function() {
-            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
                 this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
                 
                 this.setTimeout(() => {
@@ -22,7 +23,7 @@ class PostService {
             }
         });
         document.getElementById("loadMoreBtn").addEventListener("click", () => {
-            PostService.loadMore(posts.storage);
+            postService.loadMore(posts.storage);
         });
     }
     
@@ -40,17 +41,10 @@ class PostService {
             this.counter = 0;
          
             for (let x of copies) {
-                if (this.counter % 3 === 0 && this.counter < this.initialPosts) {
-                    this.result.innerHTML += `
-                        <div class="row rowsOfCards" id="rowOfCards-${Math.floor(this.rowCounter / 3)}"> 
-                        </div>
-                        <hr class="post-line">
-                    `;
-                }
-    
+
                 if (this.counter < this.initialPosts) {
-                    let currentRow = document.getElementById(`rowOfCards-${Math.floor(this.rowCounter / 3)}`);
-                    currentRow.innerHTML += `
+                    
+                    this.result.innerHTML += `
                         <div class="card" style="width: 25vw" id="card-${this.idCounter}">
                             <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
                             <div class="card-body title">
