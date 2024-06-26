@@ -60,24 +60,78 @@
                     <button class="btn btn-secondary dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="./source/data/icons/filter.svg" height="20px" width="20px" id ="filterIcon" class="filterElements me-2">
                         <p style="margin: 0%;" class="filterElements me-auto">Filter</p>
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" id="oldFirst">Old first </a>
                         <a class="dropdown-item" id="newFirst">New first</a>
                         <a class="dropdown-item" id="mostPopular">Most popular</a>
-                        <a class="dropdown-item" id="byTag">By tags</a>
-                      </div>
-                    <!-- <img src="./source/data/icons/filter.svg" height="20px" width="20px" id ="filterIcon" class="filterElements"><p style="margin: 0%;" class="filterElements">Filter</p> -->
+                        <a class="dropdown-item dropdown" id="tagFilter">Tags</a>
+                        
+                    </div>
                 </div>
-                <div id="tagFilterDiv" class="d-none">
-                    <input type="text" id="tagInput" placeholder="Enter tags" class="form-control">
-                    <button id="tagSearchBtn" class="btn btn-primary mt-2">Search</button>
+                <div id="tagFilterDropdown">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="technology" id="technologyTag">
+                        <label class="form-check-label" for="technologyTag">
+                            Technology
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="data" id="dataTag">
+                        <label class="form-check-label" for="dataTag">
+                            Data
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="cybersecurity" id="cybersecurityTag">
+                        <label class="form-check-label" for="cybersecurityTag">
+                            Cybersecurity
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="coding" id="codingTag">
+                        <label class="form-check-label" for="codingTag">
+                            Coding
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="gadgets" id="gadgetsTag">
+                        <label class="form-check-label" for="gadgetsTag">
+                            Gadgets
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="digital" id="digitalTag">
+                        <label class="form-check-label" for="digitalTag">
+                            Digital
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ai" id="aiTag">
+                        <label class="form-check-label" for="aiTag">
+                            AI
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="internet" id="internetTag">
+                        <label class="form-check-label" for="internetTag">
+                            Internet
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="innovation" id="innovationTag">
+                        <label class="form-check-label" for="innovationTag">
+                            Innovation
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="software" id="softwareTag">
+                        <label class="form-check-label" for="softwareTag">
+                            Software
+                        </label>
+                    </div>
                 </div>
-                
-                <!-- <div class="col col-md-2" id="filterDiv">
-                    <img src="./source/data/icons/filter.svg" height="20px" width="20px" id ="filterIcon" class="filterElements"><p style="margin: 0%;" class="filterElements">Filter</p>
-                </div> -->
-            </div>
+    </div>
             <div class="row">
                 <hr class="mx-auto" style="width: 90%;" id="contentPartDiv">
             </div>
@@ -94,9 +148,6 @@
             <div style="margin-top: 1rem;" class="row justify-content-md-center">
                 <div class="col-md-auto "><button class="btn btn-primary" type="button" id="loadMoreBtn">Load More</button></div>
             </div>
-            <!-- <div class="row justify-content-md-center">
-                <div class="col-md-auto"><button type="button" id="loadMoreBtn">Load More</button></div>
-            </div> -->
     </main>
 
     <footer>

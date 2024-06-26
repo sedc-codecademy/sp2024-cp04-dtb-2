@@ -58,12 +58,20 @@ class PostService {
                          
                     this.result.innerHTML += `
                         <div class="card" style="width: 25vw" id="card-${this.idCounter}">
-                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="max-width: 20vw; max-height: fit-content;" alt="Image should be here">
+                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here">
                             <div class="card-body title">
-                                <h6></h6>
                                 <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
                                 <p class="card-text">Do you want to read more?</p>
                             </div>
+                            <div class="card-body icons">
+                                <div>
+                                    <img src="./source/data/icons/star.svg" alt="Star Icon">
+                                    <p>${x.stars.length}Stars</p>
+                                </div>
+                                <div>
+                                    <img src="./source/data/icons/chat-right.svg" alt="Comment Icon">
+                                    <p>Comments</p>
+                                </div>
                         </div>  
                     `;
     
@@ -81,7 +89,7 @@ class PostService {
         }
     writePosts = (postData)=> {
         for (const item of postData) {
-            posts.newPost(`${item.imgSrc}.jpg`, item.title, item.text, item.tags, users.storage[`${item.authorId}`],new Date(item.postingTime));
+            posts.newPost(`${item.imgSrc}.jpg`, item.title, item.text, item.tags, users.storage[`${item.authorId}`], item.stars, item.postingTime);
         }
     }
 }
@@ -121,8 +129,8 @@ users.newUser("Test","Testing",'test@lala.com','123456');
 const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData);
 
-posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
-posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
+// posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
+// posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
 
 postService.renderPosts(posts.storage);
 // posts.printPosts();
@@ -138,12 +146,35 @@ document.getElementById("mostPopular").addEventListener("click", function(){
     mostPopularPostsLoader(posts.storage,posts.selectedFilter);
 })
 
-document.getElementById("byTag").addEventListener("click",function(){
-    document.getElementById('tagFilterDiv').classList.toggle('d-none');
-})
-document.getElementById('tagSearchBtn').addEventListener('click', () => {
-    showTagPosts(posts.storage,posts.selectedFilter);
+
+
+document.getElementById("tagFilter").addEventListener("mouseover", function() {
+    console.log("it worksz");
+    var tagDropdown = document.getElementById('tagFilterDropdown');
+    if (tagDropdown.style.display === 'none' || tagDropdown.style.display === '') {
+        tagDropdown.style.display = 'block';
+    } else {
+        tagDropdown.style.display = 'none';
+    }
 });
 
+// Hide tag filter dropdown when clicking outside of it
+document.addEventListener("click", (event) => {
+    var filterDiv = document.getElementById('filterDiv');
+    var tagDropdown = document.getElementById('tagFilterDropdown');
+    var isClickInsideFilterDiv = filterDiv.contains(event.target);
+    var isClickInsideDropdown = tagDropdown.contains(event.target);
+    
+    if (!isClickInsideFilterDiv && !isClickInsideDropdown) {
+        tagDropdown.style.display = 'none';
+    }
+    const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
+    if (selectedTags.length > 0) {
+        showTagPosts(posts.storage, selectedTags);
+    } else {
+        postService.renderPosts(posts.storage);
+    }  
+});
 
+console.log(postData);
 export {postService};

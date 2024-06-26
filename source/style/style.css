@@ -104,5 +104,23 @@ main {
     }
     .card {
         width: 90vw !important;
+        object-fit: fill;
+        height: auto;
     }
+    .card-img-top {
+        height: 50vw !important;
+    }
+}
+
+
+
+#tagFilterDropdown {
+    display: none;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 20vw;
+    position: sticky;
+    left: 160px;
 }

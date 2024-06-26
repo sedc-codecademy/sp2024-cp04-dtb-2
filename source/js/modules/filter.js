@@ -22,30 +22,25 @@ export function oldPostsLoader(posts) {
 }
 export function mostPopularPostsLoader(posts) {
     postService.selectedFilter = "mostPopularPostsLoader";
-    mostPopularPosts = posts.slice().sort((a, b) => b.stars.length - a.stars.length);
+    let postsWithStars = posts.filter(post => post.stars !== undefined && post.stars !== null);
+    mostPopularPosts = postsWithStars.slice().sort((a, b) => {
+        return b.stars.length - a.stars.length; 
+    });
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(mostPopularPosts);
 }
-export function showTagPosts (posts) {
+export function showTagPosts (posts, selectedTags) {
    
-    
     postService.selectedFilter = "showTagPosts";
-    let tagInput = document.getElementById("tagInput").value;
-    let correctedInput = tagInput.split(/[\s,]+/).map(tag => tag.trim()).filter(tag => tag);
-    
+    taggedPosts = [];
 
     posts.forEach(post => {
-    if (Array.isArray(post.tags) && post.tags.some(tag => correctedInput.includes(tag))) {
-        // console.log("Match found for Post:", post);
-        taggedPosts.push(post);
-    }});
+        if (Array.isArray(post.tags) && post.tags.some(tag => selectedTags.includes(tag))) {
+            taggedPosts.push(post);
+        }
+    });
 
-    console.log(taggedPosts)
     document.getElementById("contentPart").innerHTML = "";
-    postService.renderPosts(taggedPosts);
-    
-
-    console.log("CONSOLE LOGGEd")
-    
+    postService.renderPosts(taggedPosts);    
 }
     
