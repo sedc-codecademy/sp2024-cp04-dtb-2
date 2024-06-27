@@ -168,13 +168,37 @@ document.addEventListener("click", (event) => {
     if (!isClickInsideFilterDiv && !isClickInsideDropdown) {
         tagDropdown.style.display = 'none';
     }
-    const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
-    if (selectedTags.length > 0) {
-        showTagPosts(posts.storage, selectedTags);
-    } else {
-        postService.renderPosts(posts.storage);
-    }  
 });
+
+document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+        const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
+        if (selectedTags.length > 0) {
+            showTagPosts(posts.storage, selectedTags);
+        } else {
+            postService.renderPosts(posts.storage);
+        }  
+    });
+});
+
+
+
+let mybutton = document.getElementById("backToTopBtn")
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+// function topFunction() {
+//   document.body.scrollTop = 0; // For Safari
+//   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+// }
 
 console.log(postData);
 export {postService};
