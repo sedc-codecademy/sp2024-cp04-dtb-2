@@ -110,6 +110,10 @@ main {
     .card-img-top {
         height: 50vw !important;
     }
+    #postImage {
+        max-width: 18rem;
+        padding-right: 5rem;
+    }
 }
 
 
@@ -124,3 +128,17 @@ main {
     position: sticky;
     left: 160px;
 }
+
+#postImage {
+    max-width: 30rem;
+    padding-right: 5rem;
+}
+
+#singlePostId {
+    justify-content: center;
+}
+
+a:hover {
+    cursor: pointer;
+}
+

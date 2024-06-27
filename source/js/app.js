@@ -57,10 +57,10 @@ class PostService {
                 if (this.counter < this.initialPosts) {
                          
                     this.result.innerHTML += `
-                        <div class="card" style="width: 25vw" id="card-${this.idCounter}">
-                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here">
+                        <div class="card" style="width: 25vw" id="card-${x.id}">
+                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here" id="imgOpenPost" value="${x.id}">
                             <div class="card-body title">
-                                <a class="post-link" href="#"><h5 class="card-title">${x.title}</h5></a>
+                                <a class="post-link"  value="${x.id}"><h5 class="card-title">${x.title}</h5></a>
                                 <p class="card-text">Do you want to read more?</p>
                             </div>
                             <div class="card-body icons">
@@ -81,6 +81,32 @@ class PostService {
                 this.rowCounter++;
                 this.counter++;
             }
+            let titlePostOpener = document.getElementsByClassName("post-link");
+            Array.from(titlePostOpener).forEach(function(element) {
+            element.addEventListener('click', getPostId);
+  });
+        }
+        renderSinglePost = (post) =>{
+
+
+            this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
+    <div class="row g-0">
+      <div class="col-md-5">
+        <img src=${post.imgSrc} id="postImage" class="img-fluid rounded-start" alt="Relevant Picture">
+      </div>
+      <br>
+      <div class="col-md-7">
+        <div class="singleCard-body">
+          <h2 class="card-title card-header"> ${post.title}</h2>
+          <small>Created by - ${post.authorId.fullName()} on ${post.postingTime}  </small><br>
+          <small>tags- ${post.tags}</small>
+          <hr>
+          <p class="singleCard-text">${post.text}</p>
+          <div class="card" style="width: 70vw;">
+        </div>
+      </div>
+    </div>
+  </div>`
         }
 
         loadMore = (posts) => {
@@ -92,6 +118,16 @@ class PostService {
             posts.newPost(`${item.imgSrc}.jpg`, item.title, item.text, item.tags, users.storage[`${item.authorId}`], item.stars, item.postingTime);
         }
     }
+    
+    openPost (postId){
+        let post = posts.storage.find(x=> x.id == postId);
+        this.renderSinglePost(post);
+    }
+} 
+let getPostId = function(){
+        let postId = this.getAttribute("value");
+        console.log(postId);
+        postService.openPost(postId);
 }
 document.getElementById("loadMoreBtn").addEventListener("click", function () {
     console.log(postService.selectedFilter)
@@ -172,7 +208,7 @@ document.addEventListener("click", (event) => {
     if (selectedTags.length > 0) {
         showTagPosts(posts.storage, selectedTags);
     } else {
-        postService.renderPosts(posts.storage);
+        // postService.renderPosts(posts.storage);
     }  
 });
 
