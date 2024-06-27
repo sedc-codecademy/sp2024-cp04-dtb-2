@@ -158,7 +158,7 @@ document.getElementById("tagFilter").addEventListener("mouseover", function() {
     }
 });
 
-// Hide tag filter dropdown when clicking outside of it
+
 document.addEventListener("click", (event) => {
     var filterDiv = document.getElementById('filterDiv');
     var tagDropdown = document.getElementById('tagFilterDropdown');
@@ -194,11 +194,7 @@ function scrollFunction() {
   }
 }
 
-// When the user clicks on the button, scroll to the top of the document
-// function topFunction() {
-//   document.body.scrollTop = 0; // For Safari
-//   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-// }
+
 
 console.log(postData);
 export {postService};
