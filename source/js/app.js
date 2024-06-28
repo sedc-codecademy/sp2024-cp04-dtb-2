@@ -194,7 +194,7 @@ document.getElementById("tagFilter").addEventListener("mouseover", function() {
     }
 });
 
-// Hide tag filter dropdown when clicking outside of it
+
 document.addEventListener("click", (event) => {
     var filterDiv = document.getElementById('filterDiv');
     var tagDropdown = document.getElementById('tagFilterDropdown');
@@ -204,13 +204,33 @@ document.addEventListener("click", (event) => {
     if (!isClickInsideFilterDiv && !isClickInsideDropdown) {
         tagDropdown.style.display = 'none';
     }
-    const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
-    if (selectedTags.length > 0) {
-        showTagPosts(posts.storage, selectedTags);
-    } else {
-        // postService.renderPosts(posts.storage);
-    }  
 });
+
+document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+        const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
+        if (selectedTags.length > 0) {
+            showTagPosts(posts.storage, selectedTags);
+        } else {
+            postService.renderPosts(posts.storage);
+        }  
+    });
+});
+
+
+
+let mybutton = document.getElementById("backToTopBtn")
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+
 
 console.log(postData);
 export {postService};

@@ -120,7 +120,6 @@ main {
 
 #tagFilterDropdown {
     display: none;
-    background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -142,3 +141,28 @@ a:hover {
     cursor: pointer;
 }
 
+#backToTopBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: rgb(255, 255, 255); /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 0px; /* Some padding */
+    border-radius: 100px; /* Rounded corners */
+    font-size: 0px; /* Increase font size */
+    height: 25px;
+    width: 25px;
+  }
+  
+  #backToTopBtn:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+  }
+  #backToTopImg {
+    height: 25px;
+    width: 25px;
+  }
