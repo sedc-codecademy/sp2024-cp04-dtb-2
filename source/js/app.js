@@ -15,8 +15,43 @@ class PostService {
         this.loadMoreBtn = document.getElementById("loadMoreBtn");
 
         
+        homeBtn.addEventListener('click',()=>{
+            newPostsLoader(posts.storage,posts.selectedFilter)
+            this.loadMoreBtn.style.visibility = 'visible';
+
+        });
+        window.addEventListener('scroll', function() {
+            if(postService.selectedFilter == null){
+                // return;
+            }
+            else if(typeof postService.selectedFilter === 'string'){
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
+                this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
+                
+                this.setTimeout(() => {
+                    postService.loadingIndicator.style.visibility = 'hidden';
+                    if (postService.selectedFilter == "newPostsLoader") {
+                        postService.loadMore(newestPosts);
+                        console.log("first");
+                    } else if (postService.selectedFilter == "oldPostsLoader") {
+                        postService.loadMore(oldPosts);
+                        console.log("second");
+                    } else if (postService.selectedFilter == "mostPopularPostsLoader") {
+                        postService.loadMore(mostPopularPosts);
+                        console.log("third");
+                    } else if (postService.selectedFilter == "showTagPosts") {
+                           postService.loadMore(taggedPosts);
+                        
+                    }  else {
+                        // postService.loadMore(posts.storage);
+                    }
+                }, 1250);
+            }
+        }})
         
-    }
+        
+        
+  }
         selectedFilter = "newPostLoader";
         initialPosts = 12;
         loadPosts = 12;
@@ -37,7 +72,7 @@ class PostService {
                          
                     this.result.innerHTML += `
                         <div class="card" style="width: 25vw" id="card-${x.id}">
-                            <img class="card-img-top img-fluid" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here" id="imgOpenPost" value="${x.id}">
+                            <img class="card-img-top img-fluid imgLink" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here" value="${x.id}">
                             <div class="card-body title">
                                 <a class="post-link"  value="${x.id}"><h5 class="card-title">${x.title}</h5></a>
                                 <p class="card-text">Do you want to read more?</p>
@@ -63,10 +98,16 @@ class PostService {
             let titlePostOpener = document.getElementsByClassName("post-link");
             Array.from(titlePostOpener).forEach(function(element) {
             element.addEventListener('click', getPostId);
+            
+  });
+            let imgPostOpener = document.getElementsByClassName("imgLink");
+            Array.from(imgPostOpener).forEach(function(element) {
+            element.addEventListener('click', getPostId);
+            
   });
         }
         renderSinglePost = (post) =>{
-            singlePostRendered = 2;
+            window.scrollTo(0,0);
             this.loadMoreBtn.style.visibility = 'hidden';
 
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
@@ -78,7 +119,7 @@ class PostService {
       <div class="col-md-7">
         <div class="singleCard-body">
           <h2 class="card-title card-header"> ${post.title}</h2>
-          <small>Created by - ${post.authorId.fullName()} on ${post.postingTime}  </small><br>
+          <small>Created by - <a style="color: blue"  id="${post.authorId.id}">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
           <small>tags- ${post.tags}</small>
           <hr>
           <p class="singleCard-text">${post.text}</p>
@@ -87,7 +128,8 @@ class PostService {
       </div>
     </div>
   </div>
-  
+  <br>
+  <br>
     
     <div class="comments">
         <!-- Existing comments... -->
@@ -121,7 +163,12 @@ class PostService {
                 <button type="submit">Post Comment</button>
             </form>
         </div>
-    </div>`
+    </div>
+    <br><br><hr>
+                        <div class="ad-banner">
+        <h1>QINSHIFT</h1>
+        <p>The Change Begins Here! <a href="https://qinshiftacademy.com/">Click to learn more</a></p>
+    </div><hr><br>`
 
     
 let testComment = document.getElementById("commentForm")
@@ -152,42 +199,13 @@ testComment.addEventListener("click", function (e) {
         this.renderSinglePost(post);
     }
 } 
-let singlePostRendered = 1;
-switch(singlePostRendered){
-    case 1 : {window.addEventListener('scroll', function() {
-        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
-            this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
-            
-            this.setTimeout(() => {
-                postService.loadingIndicator.style.visibility = 'hidden';
-                if (postService.selectedFilter == "newPostsLoader") {
-                    postService.loadMore(newestPosts);
-                    console.log("first");
-                } else if (postService.selectedFilter == "oldPostsLoader") {
-                    postService.loadMore(oldPosts);
-                    console.log("second");
-                } else if (postService.selectedFilter == "mostPopularPostsLoader") {
-                    postService.loadMore(mostPopularPosts);
-                    console.log("third");
-                } else if (postService.selectedFilter == "showTagPosts") {
-                    postService.loadMore(taggedPosts);
-                    
-                } else {
-                    postService.loadMore(posts.storage);
-                }
-            }, 1250);
-        }
-    })}
-    break;
-    case 2:{console.log('post loaded')
-    }break;
-}
 let getPostId = function(){
         let postId = this.getAttribute("value");
-        console.log(postId);
+        
+        postService.selectedFilter = null;
         postService.openPost(postId);
 }
-document.getElementById("loadMoreBtn").addEventListener("click", function () {
+loadMoreBtn.addEventListener("click", function () {
     console.log(postService.selectedFilter)
     if (postService.selectedFilter == "newPostsLoader") {
         postService.loadMore(newestPosts);
@@ -221,12 +239,14 @@ users.newUser("Boris","Krstovski",'borisk@lala.com','123456');
 users.newUser("Test","Testing",'test@lala.com','123456');
 
 const postData = await getDataFromJson(postJsonPath);
-postService.writePosts(postData);
+postService.writePosts(postData)
+
+newPostsLoader(posts.storage,posts.selectedFilter);
 
 // posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
 // posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
 
-postService.renderPosts(posts.storage);
+// postService.renderPosts(posts.storage.sort(x=> x.postingTime ));
 // posts.printPosts();
 
 // users.printUsers();
@@ -253,6 +273,7 @@ document.getElementById("tagFilter").addEventListener("mouseover", function() {
 });
 
 
+// Hide tag filter dropdown when clicking outside of it
 document.addEventListener("click", (event) => {
     var filterDiv = document.getElementById('filterDiv');
     var tagDropdown = document.getElementById('tagFilterDropdown');
@@ -262,33 +283,13 @@ document.addEventListener("click", (event) => {
     if (!isClickInsideFilterDiv && !isClickInsideDropdown) {
         tagDropdown.style.display = 'none';
     }
+    const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
+    if (selectedTags.length > 0) {
+        showTagPosts(posts.storage, selectedTags);
+    } else {
+        // postService.renderPosts(posts.storage);
+    }  
 });
-
-document.querySelectorAll('.form-check-input').forEach(checkbox => {
-    checkbox.addEventListener('change', (event) => {
-        const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
-        if (selectedTags.length > 0) {
-            showTagPosts(posts.storage, selectedTags);
-        } else {
-            postService.renderPosts(posts.storage);
-        }  
-    });
-});
-
-
-
-let mybutton = document.getElementById("backToTopBtn")
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    mybutton.style.display = "block";
-  } else {
-    mybutton.style.display = "none";
-  }
-}
-
-
 
 console.log(postData);
 export {postService};

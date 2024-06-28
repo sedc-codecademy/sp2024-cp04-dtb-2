@@ -139,6 +139,10 @@ main {
 
 a:hover {
     cursor: pointer;
+    color: rgb(134, 163, 231);
+}
+.imgLink:hover {
+    cursor: pointer;
 }
 .comments {
     max-width: 600px;
@@ -209,3 +213,21 @@ a:hover {
     height: 25px;
     width: 25px;
   }
+
+  .ad-banner {
+            background-color: #27404d;
+            color: #D28F74;
+            text-align: center;
+        }
+        .ad-banner h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .ad-banner p {
+            font-size: 16px;
+        }
+        .ad-banner a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
