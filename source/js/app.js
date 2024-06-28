@@ -12,31 +12,10 @@ class PostService {
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
         this.loadingIndicator = document.getElementById('loadIndicator');
+        this.loadMoreBtn = document.getElementById("loadMoreBtn");
 
-        window.addEventListener('scroll', function() {
-            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
-                this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
-                
-                this.setTimeout(() => {
-                    postService.loadingIndicator.style.visibility = 'hidden';
-                    if (postService.selectedFilter == "newPostsLoader") {
-                        postService.loadMore(newestPosts);
-                        console.log("first");
-                    } else if (postService.selectedFilter == "oldPostsLoader") {
-                        postService.loadMore(oldPosts);
-                        console.log("second");
-                    } else if (postService.selectedFilter == "mostPopularPostsLoader") {
-                        postService.loadMore(mostPopularPosts);
-                        console.log("third");
-                    } else if (postService.selectedFilter == "showTagPosts") {
-                        postService.loadMore(taggedPosts);
-                        
-                    } else {
-                        postService.loadMore(posts.storage);
-                    }
-                }, 1250);
-            }
-        });
+        
+        
     }
         selectedFilter = "newPostLoader";
         initialPosts = 12;
@@ -87,7 +66,8 @@ class PostService {
   });
         }
         renderSinglePost = (post) =>{
-
+            singlePostRendered = 2;
+            this.loadMoreBtn.style.visibility = 'hidden';
 
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
     <div class="row g-0">
@@ -106,7 +86,55 @@ class PostService {
         </div>
       </div>
     </div>
-  </div>`
+  </div>
+  
+    
+    <div class="comments">
+        <!-- Existing comments... -->
+            <div class="comments">
+        <!-- Logged-in user comment -->
+        <div class="comment">
+            <span class="user">John Doe (Logged In)</span>
+            <span class="date">Posted on June 14, 2024</span>
+            <p>This is a great article! Keep up the good work.</p>
+            <button class="like-button">Like</button>
+        </div>
+
+        <!-- Anonymous user comment -->
+        <div class="comment">
+            <span class="user">Anonymous</span>
+            <span class="date">Posted on June 15, 2024</span>
+            <p>Interesting read. Thanks for sharing!</p>
+            <button class="like-button">Like</button>
+        </div>
+
+        <!-- Add more comments here... -->
+    </div>
+        <!-- Comment form -->
+        <div class="comment-form">
+            <h3>Add a Comment</h3>
+            <form id="commentForm">
+                <label for="commentText">Your Comment:</label>
+                <input type="text" id="commentText" name="commentText" placeholder="Type your comment here...">
+                <label for="anonymous">Comment Anonymously:</label>
+                <input type="checkbox" id="anonymous" name="anonymous">
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>
+    </div>`
+
+    
+let testComment = document.getElementById("commentForm")
+
+testComment.addEventListener("click", function (e) {
+    e.preventDefault();
+    const commentText = document.getElementById("commentText").value;
+    const isAnonymous = document.getElementById("anonymous").checked;
+
+    // Process the comment (you can send it to a server or handle it as needed)
+    console.log("Comment:", commentText);
+    console.log("Anonymous:", isAnonymous);
+});
         }
 
         loadMore = (posts) => {
@@ -124,6 +152,36 @@ class PostService {
         this.renderSinglePost(post);
     }
 } 
+let singlePostRendered = 1;
+switch(singlePostRendered){
+    case 1 : {window.addEventListener('scroll', function() {
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
+            this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
+            
+            this.setTimeout(() => {
+                postService.loadingIndicator.style.visibility = 'hidden';
+                if (postService.selectedFilter == "newPostsLoader") {
+                    postService.loadMore(newestPosts);
+                    console.log("first");
+                } else if (postService.selectedFilter == "oldPostsLoader") {
+                    postService.loadMore(oldPosts);
+                    console.log("second");
+                } else if (postService.selectedFilter == "mostPopularPostsLoader") {
+                    postService.loadMore(mostPopularPosts);
+                    console.log("third");
+                } else if (postService.selectedFilter == "showTagPosts") {
+                    postService.loadMore(taggedPosts);
+                    
+                } else {
+                    postService.loadMore(posts.storage);
+                }
+            }, 1250);
+        }
+    })}
+    break;
+    case 2:{console.log('post loaded')
+    }break;
+}
 let getPostId = function(){
         let postId = this.getAttribute("value");
         console.log(postId);
@@ -234,3 +292,5 @@ function scrollFunction() {
 
 console.log(postData);
 export {postService};
+
+
