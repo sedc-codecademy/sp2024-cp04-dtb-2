@@ -5,7 +5,7 @@ export  let taggedPosts = [];
 export let mostPopularPosts = [];
 export let oldPosts = [];
 export let newestPosts = [];
-
+export let filteredPosts = [];
 
 
 export function newPostsLoader(posts) {
@@ -43,4 +43,10 @@ export function showTagPosts (posts, selectedTags) {
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(taggedPosts);    
 }
-    
+export function searchPostsLoader(posts) {
+    postService.selectedFilter = "searchedPosts";
+    let searchInput = document.getElementById("searchInput").value.toLowerCase();
+    filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchInput) || post.text.toLowerCase().includes(searchInput));
+    document.getElementById("contentPart").innerHTML = "";
+    postService.renderPosts(filteredPosts);
+}

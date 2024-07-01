@@ -1,7 +1,7 @@
 import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
-import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts } from "./modules/filter.js";
+import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts } from "./modules/filter.js";
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -31,6 +31,8 @@ class PostService {
                     } else if (postService.selectedFilter == "showTagPosts") {
                         postService.loadMore(taggedPosts);
                         
+                    } else if (postService.selectedFilter == "searchedPosts") {
+                        postService.loadMore(filteredPosts);
                     } else {
                         postService.loadMore(posts.storage);
                     }
@@ -107,7 +109,9 @@ document.getElementById("loadMoreBtn").addEventListener("click", function () {
     } else if (postService.selectedFilter == "showTagPosts") {
         postService.loadMore(taggedPosts);
         
-    } else {
+    } else if (postService.selectedFilter == "searchedPosts") {
+        postService.loadMore(filteredPosts);
+    }else {
         postService.loadMore(posts.storage);
     }
 });
@@ -145,7 +149,12 @@ document.getElementById("oldFirst").addEventListener("click", function(){
 document.getElementById("mostPopular").addEventListener("click", function(){
     mostPopularPostsLoader(posts.storage,posts.selectedFilter);
 })
-
+document.getElementById("srcIcon").addEventListener("click", function() {
+    // if(document.getElementById("searchInput").getAttribute("style") == "display:none"){
+    //     document.getElementById("searchInput").setAttribute
+    // }
+    searchPostsLoader(posts.storage);
+});
 
 
 document.getElementById("tagFilter").addEventListener("mouseover", function() {
