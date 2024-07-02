@@ -82,6 +82,12 @@ main {
     border: 0;
     color: black;
 }
+
+#loadMoreDiv {
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 768px) { 
     #contentPartDiv {
         justify-content: center;
@@ -98,9 +104,16 @@ main {
 }
 
 @media (max-width: 576px) { 
+    /* main {
+        display: flex;
+        justify-content: center;
+    } */
+    
     #contentPart {
+        
         grid-template-columns: 1fr; 
         justify-content: center; 
+       
     }
     .card {
         width: 90vw !important;
@@ -114,6 +127,11 @@ main {
         max-width: 18rem;
         padding-right: 5rem;
     }
+    #loadMoreDiv {
+        display: flex;
+        justify-content: center;
+    }
+    
 }
 
 

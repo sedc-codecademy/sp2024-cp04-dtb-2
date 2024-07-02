@@ -26,6 +26,7 @@ class PostService {
             }
             else if(typeof postService.selectedFilter === 'string'){
             if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
+                
                 this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
                 
                 this.setTimeout(() => {
@@ -287,17 +288,35 @@ document.addEventListener("click", (event) => {
     var tagDropdown = document.getElementById('tagFilterDropdown');
     var isClickInsideFilterDiv = filterDiv.contains(event.target);
     var isClickInsideDropdown = tagDropdown.contains(event.target);
+    var tagClickCheck = true; 
     
     if (!isClickInsideFilterDiv && !isClickInsideDropdown) {
         tagDropdown.style.display = 'none';
+        tagClickCheck = false;
     }
     const selectedTags = Array.from(document.querySelectorAll('.form-check-input:checked')).map(cb => cb.value);
-    if (selectedTags.length > 0) {
-        showTagPosts(posts.storage, selectedTags);
-    } else {
-        // postService.renderPosts(posts.storage);
+    if (selectedTags.length > 0 ) {
+        // showTagPosts(posts.storage, selectedTags);
+        if (tagClickCheck == true) {
+            showTagPosts(posts.storage, selectedTags);
+        }
+        tagClickCheck = false; 
+    } else {    
+            // postService.renderPosts(posts.storage);
     }  
 });
+
+
+let mybutton = document.getElementById("backToTopBtn")
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
 
 console.log(postData);
 export {postService};
