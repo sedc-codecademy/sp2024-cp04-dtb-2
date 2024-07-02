@@ -121,10 +121,14 @@ main {
 #tagFilterDropdown {
     display: none;
     min-width: 160px;
+    background-color: white;
+    color: black;
+    padding-left: 15px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    width: 20vw;
-    position: sticky;
+    width: 7vw;
+    /* position: sticky; */
+    position: absolute;
     left: 160px;
 }
 
@@ -144,49 +148,7 @@ a:hover {
 .imgLink:hover {
     cursor: pointer;
 }
-.comments {
-    max-width: 600px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-}
-.comment {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.comment .user {
-    font-weight: bold;
-}
-.comment .date {
-    font-size: 12px;
-    color: #888;
-}
-.comment .like-button {
-    margin-left: 10px;
-    cursor: pointer;
-}
-.comment-form {
-    margin-top: 20px;
-}
-.comment-form label {
-    display: block;
-    font-weight: bold;
-}
-.comment-form input[type="text"] {
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 10px;
-}
-.comment-form input[type="checkbox"] {
-    margin-right: 5px;
-}
-.comment-form button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
+
 
 #backToTopBtn {
     display: none; /* Hidden by default */
@@ -234,3 +196,47 @@ a:hover {
   /* #searchInput {
     display: none;
   } */
+
+  .comments {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+.comment {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.comment .user {
+    font-weight: bold;
+}
+.comment .date {
+    font-size: 12px;
+    color: #888;
+}
+.comment .like-button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+.comment-form {
+    margin-top: 20px;
+}
+.comment-form label {
+    display: block;
+    font-weight: bold;
+}
+.comment-form input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.comment-form input[type="checkbox"] {
+    margin-right: 5px;
+}
+.comment-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}

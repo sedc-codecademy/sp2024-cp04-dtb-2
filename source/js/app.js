@@ -1,7 +1,7 @@
 import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
-import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts } from "./modules/filter.js";
+import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -32,20 +32,18 @@ class PostService {
                     postService.loadingIndicator.style.visibility = 'hidden';
                     if (postService.selectedFilter == "newPostsLoader") {
                         postService.loadMore(newestPosts);
-                        console.log("first");
                     } else if (postService.selectedFilter == "oldPostsLoader") {
                         postService.loadMore(oldPosts);
-                        console.log("second");
                     } else if (postService.selectedFilter == "mostPopularPostsLoader") {
                         postService.loadMore(mostPopularPosts);
-                        console.log("third");
                     } else if (postService.selectedFilter == "showTagPosts") {
                            postService.loadMore(taggedPosts);
-                        
                     } else if (postService.selectedFilter == "searchedPosts") {
                         postService.loadMore(filteredPosts);
+                    }else if (postService.selectedFilter == "authorPosts") {2
+                        postService.loadMore(postsByAuthor);
                     } else {
-                        // postService.loadMore(posts.storage);
+                        postService.loadMore(posts.storage);  // -- obsolete
                     }
                 }, 1250);
             }
@@ -60,6 +58,7 @@ class PostService {
         rowCounter =0;
         idCounter = 0;
         loadedPosts = [];
+        loadedSinglePost = null;
         
 
         renderPosts = (posts) => {
@@ -100,13 +99,11 @@ class PostService {
             let titlePostOpener = document.getElementsByClassName("post-link");
             Array.from(titlePostOpener).forEach(function(element) {
             element.addEventListener('click', getPostId);
-            
-  });
+            });
             let imgPostOpener = document.getElementsByClassName("imgLink");
             Array.from(imgPostOpener).forEach(function(element) {
             element.addEventListener('click', getPostId);
-            
-  });
+            });
         }
         renderSinglePost = (post) =>{
             window.scrollTo(0,0);
@@ -121,7 +118,7 @@ class PostService {
       <div class="col-md-7">
         <div class="singleCard-body">
           <h2 class="card-title card-header"> ${post.title}</h2>
-          <small>Created by - <a style="color: blue"  id="${post.authorId.id}">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
+          <small>Created by - <a style="color: blue"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
           <small>tags- ${post.tags}</small>
           <hr>
           <p class="singleCard-text">${post.text}</p>
@@ -172,8 +169,10 @@ class PostService {
         <p>The Change Begins Here! <a href="https://qinshiftacademy.com/">Click to learn more</a></p>
     </div><hr><br>`
 
-    
-let testComment = document.getElementById("commentForm")
+    document.getElementById("postAuthorId").addEventListener('click',()=>{
+        authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
+    });
+let testComment = document.getElementById("commentForm");
 
 testComment.addEventListener("click", function (e) {
     e.preventDefault();
@@ -198,12 +197,12 @@ testComment.addEventListener("click", function (e) {
     
     openPost (postId){
         let post = posts.storage.find(x=> x.id == postId);
+        this.loadedSinglePost = post;
         this.renderSinglePost(post);
     }
 } 
 let getPostId = function(){
         let postId = this.getAttribute("value");
-        
         postService.selectedFilter = null;
         postService.openPost(postId);
 }

@@ -1,11 +1,11 @@
 import {postService} from "../app.js";
 
-
 export  let taggedPosts = [];
 export let mostPopularPosts = [];
 export let oldPosts = [];
 export let newestPosts = [];
 export let filteredPosts = [];
+export let postsByAuthor = [];
 
 
 export function newPostsLoader(posts) {
@@ -49,4 +49,11 @@ export function searchPostsLoader(posts) {
     filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchInput) || post.text.toLowerCase().includes(searchInput));
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(filteredPosts);
+}
+export function authorPostsLoader(posts, id) {
+    postService.selectedFilter = "authorPosts";
+    postsByAuthor = posts.filter(x => x.authorId == id);
+    document.getElementById('contentPart').innerHTML = "";
+    postService.renderPosts(postsByAuthor);
+
 }
