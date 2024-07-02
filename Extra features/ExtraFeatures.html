@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up, Log In, and Newsletter</title>
+    <link rel="stylesheet" href="ExtraFeaturesStyle.css">
+</head>
+<body>
+  <!--design navbar-->
+    <div class="navbar">
+        <button id="loginBtn">Log In</button>
+        <button id="logoutBtn" style="display: none;">Log Out</button>
+        <button id="newsletterBtn">Newsletter</button>
+        <span id="loggedInUser" class="user-info"></span>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Log In</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" name="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+            <p>Don't have an account? <button id="showSignUpBtn">Sign Up</button></p>
+        </div>
+    </div>
+    <!--design for singup modal -->
+    <div id="signUpModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="signUpUsername">Username</label>
+                    <input type="text" id="signUpUsername" name="signUpUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" name="signUpPassword" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <!--design for subscribe modal -->
+    <div id="subscribeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Subscribe to Newsletter</h2>
+            <form id="newsletterForm">
+                <div class="form-group">
+                    <label for="newsletterEmail">Email</label>
+                    <input type="email" id="newsletterEmail" name="newsletterEmail" required>
+                </div>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+   <!--design for unsubscribe modal -->
+    <div id="unsubscribeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Unsubscribe from Newsletter</h2>
+            <p>Your current subscription email is: <span id="currentEmail"></span></p>
+            <button id="unsubscribeBtn">Unsubscribe</button>
+        </div>
+    </div>
+
+    <script src="ExtraFeatuesScripts.js"></script>
+</body>
+</html>
