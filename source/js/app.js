@@ -26,7 +26,6 @@ class PostService {
             }
             else if(typeof postService.selectedFilter === 'string'){
             if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
-                
                 this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
                 
                 this.setTimeout(() => {
