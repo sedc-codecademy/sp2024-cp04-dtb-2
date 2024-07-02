@@ -13,44 +13,63 @@ class PostService {
         this.result = document.getElementById('contentPart');
         this.loadingIndicator = document.getElementById('loadIndicator');
         this.loadMoreBtn = document.getElementById("loadMoreBtn");
-
+        this.firstScrollReached = false;
+        this.filterDiv = document.getElementById("filterDiv");
+        this.backBtn = document.getElementById("backBtn");
         
         homeBtn.addEventListener('click',()=>{
             newPostsLoader(posts.storage,posts.selectedFilter)
-            this.loadMoreBtn.style.visibility = 'visible';
+            this.loadMoreBtn.style.display = 'block';
 
         });
+
         window.addEventListener('scroll', function() {
             if(postService.selectedFilter == null){
-                // return;
-            }
-            else if(typeof postService.selectedFilter === 'string'){
-            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
-                this.setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200)
-                
-                this.setTimeout(() => {
-                    postService.loadingIndicator.style.visibility = 'hidden';
-                    if (postService.selectedFilter == "newPostsLoader") {
-                        postService.loadMore(newestPosts);
-                    } else if (postService.selectedFilter == "oldPostsLoader") {
-                        postService.loadMore(oldPosts);
-                    } else if (postService.selectedFilter == "mostPopularPostsLoader") {
-                        postService.loadMore(mostPopularPosts);
-                    } else if (postService.selectedFilter == "showTagPosts") {
-                           postService.loadMore(taggedPosts);
-                    } else if (postService.selectedFilter == "searchedPosts") {
-                        postService.loadMore(filteredPosts);
-                    }else if (postService.selectedFilter == "authorPosts") {2
-                        postService.loadMore(postsByAuthor);
+                return;
+            } else if(typeof postService.selectedFilter === 'string'){
+                // Check if the user has scrolled to the bottom
+                if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 0.9) {
+                    if (!this.firstScrollReached) {
+                        // First scroll to the bottom
+                        this.firstScrollReached = true;
                     } else {
-                        postService.loadMore(posts.storage);  // -- obsolete
+                        // Second scroll to the bottom
+                        this.firstScrollReached = false; // Reset for future double scroll detection
+        
+                        // Show loading indicator
+                        setTimeout(() => postService.loadingIndicator.style.visibility = 'visible', 200);
+        
+                        // Load more posts
+                        setTimeout(() => {
+                            postService.loadingIndicator.style.visibility = 'hidden';
+                            switch (postService.selectedFilter) {
+                                case "newPostsLoader":
+                                    postService.loadMore(newestPosts);
+                                    break;
+                                case "oldPostsLoader":
+                                    postService.loadMore(oldPosts);
+                                    break;
+                                case "mostPopularPostsLoader":
+                                    postService.loadMore(mostPopularPosts);
+                                    break;
+                                case "showTagPosts":
+                                    postService.loadMore(taggedPosts);
+                                    break;
+                                case "searchedPosts":
+                                    postService.loadMore(filteredPosts);
+                                    break;
+                                case "authorPosts":
+                                    postService.loadMore(postsByAuthor);
+                                    break;
+                                default:
+                                    postService.loadMore(posts.storage);  // -- obsolete
+                                    break;
+                            }
+                        }, 1250);
                     }
-                }, 1250);
+                }
             }
-        }})
-        
-        
-        
+        });
   }
         selectedFilter = "newPostLoader";
         initialPosts = 12;
@@ -107,7 +126,9 @@ class PostService {
         }
         renderSinglePost = (post) =>{
             window.scrollTo(0,0);
-            this.loadMoreBtn.style.visibility = 'hidden';
+            this.loadMoreBtn.style.display = "none";
+            this.filterDiv.style.display = "none";
+            this.backBtn.style.display = "block";
 
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
     <div class="row g-0">
@@ -270,7 +291,7 @@ document.getElementById("srcIcon").addEventListener("click", function() {
 });
 
 
-document.getElementById("tagFilter").addEventListener("mouseover", function() {
+document.getElementById("tagFilter").addEventListener("click", function() {
     console.log("it worksz");
     var tagDropdown = document.getElementById('tagFilterDropdown');
     if (tagDropdown.style.display === 'none' || tagDropdown.style.display === '') {

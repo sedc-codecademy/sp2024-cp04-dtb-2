@@ -1,6 +1,6 @@
 import {postService} from "../app.js";
 
-export  let taggedPosts = [];
+export let taggedPosts = [];
 export let mostPopularPosts = [];
 export let oldPosts = [];
 export let newestPosts = [];
