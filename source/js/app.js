@@ -45,7 +45,7 @@ class PostService {
                     } else if (postService.selectedFilter == "searchedPosts") {
                         postService.loadMore(filteredPosts);
                     } else {
-                        postService.loadMore(posts.storage);
+                        // postService.loadMore(posts.storage);
                     }
                 }, 1250);
             }
