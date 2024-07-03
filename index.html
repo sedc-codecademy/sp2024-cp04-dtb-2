@@ -25,11 +25,15 @@
                         <img src="./source/data/img/transparentBG.png" width="90px" height="90px">
                         <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row">
                             <li class="nav-item">
-                                <button class="btn" type="submit"><img src="./source/data/icons/search.svg" id="srcIcon" alt="Search Icon"
-                                        style="width: 20px; height: 20px;"></button>
+                                <div id="searchDiv">
+                                    <input type="search" id="searchInput">
+                                    <button class="btn" type="submit"><img src="./source/data/icons/search.svg" id="srcIcon" alt="Search Icon"
+                                            style="width: 20px; height: 20px;"></button>
+                                </div>
+                                
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" aria-current="page" id="homeBtn">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-disabled="true">About</a>
@@ -49,37 +53,109 @@
     </header>
 
     <main>
-            <div class="row justify-content-md-center">
-                <div class="col-md-auto">
-                    TITLE (LANDING PAGE)
-                </div>
-            </div>
             <div class="row">
-                <div class="col col-md-2" id="filterDiv">
-                    <img src="./source/data/icons/filter.svg" height="20px" width="20px" id ="filterIcon" class="filterElements"><p style="margin: 0%;" class="filterElements">Filter</p>
+                
+                <div class="dropdown" id="filterDiv">
+                    <button class="btn btn-secondary dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="./source/data/icons/filter.svg" height="20px" width="20px" id ="filterIcon" class="filterElements me-2">
+                        <p style="margin: 0%;" class="filterElements me-auto">Filter</p>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" id="oldFirst">Old first </a>
+                        <a class="dropdown-item" id="newFirst">New first</a>
+                        <a class="dropdown-item" id="mostPopular">Most popular</a>
+                        <a class="dropdown-item dropdown" id="tagFilter">Tags</a>
+                        
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <button id="backBtn"><img src="./source/data/icons/arrow-left.svg"></button>
+                </div>
+                <div id="tagFilterDropdown" class="dropdown-menu">
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="technology" id="technologyTag">
+                        <label class="form-check-label" for="technologyTag">
+                            Technology
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="data" id="dataTag">
+                        <label class="form-check-label" for="dataTag">
+                            Data
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="cybersecurity" id="cybersecurityTag">
+                        <label class="form-check-label" for="cybersecurityTag">
+                            Cybersecurity
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="coding" id="codingTag">
+                        <label class="form-check-label" for="codingTag">
+                            Coding
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="gadgets" id="gadgetsTag">
+                        <label class="form-check-label" for="gadgetsTag">
+                            Gadgets
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="digital" id="digitalTag">
+                        <label class="form-check-label" for="digitalTag">
+                            Digital
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="AI" id="aiTag">
+                        <label class="form-check-label" for="aiTag">
+                            AI
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="internet" id="internetTag">
+                        <label class="form-check-label" for="internetTag">
+                            Internet
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="innovation" id="innovationTag">
+                        <label class="form-check-label" for="innovationTag">
+                            Innovation
+                        </label>
+                    </div>
+                    <div class="form-check dropdown-item">
+                        <input class="form-check-input" type="checkbox" value="software" id="softwareTag">
+                        <label class="form-check-label" for="softwareTag">
+                            Software
+                        </label>
+                    </div>
+                </div>
+    </div>
             <div class="row">
-                <hr class="mx-auto" style="width: 90%;">
+                <hr class="mx-auto" style="width: 90%;" id="contentPartDiv">
             </div>
             <div class="row justify-content-md-center" id="contentPartDiv">
                 <div class="col-md-10" id="contentPart">
                 </div>
             </div>
-            <div class="row justify-content-md-center" style="margin-bottom: 2rem;">AD SPACE</div>
             <div id="loadIndicator" style="visibility: hidden" class="text-center">
                 <div class="spinner-border text-info" role="status">
                     <span class="sr-only"></span>
                 </div>
             </div> 
-            <div style="margin-top: 1rem;" class="row justify-content-md-center">
-                <div class="col-md-auto "><button class="btn btn-primary" type="button" id="loadMoreBtn">Load More</button></div>
+            <div style="margin-bottom: 4rem;" class="row justify-content-md-center">
+                 <!-- <div class="col-md-auto " id="loadMoreDiv"><button class="btn btn-primary" type="button" id="loadMoreBtn">Load More</button></div>  -->
             </div>
+            <a href="#contentPart"><button id="backToTopBtn"><img src="./source/data/icons/arrow-up.svg" id="backToTopImg"></button></a>
     </main>
 
     <footer>
-
+        <div class="col-md-auto " id="loadMoreDiv"><button class="btn btn-primary" type="button" id="loadMoreBtn">Load More</button></div>  
     </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
