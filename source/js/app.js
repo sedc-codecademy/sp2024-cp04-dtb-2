@@ -2,6 +2,25 @@ import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
+
+class ModalService {
+    constructor(){
+        this.currentUser = this.removeSession();
+    }
+
+    emptySession(){
+        let user = users.emptyUser();
+        const {firstName, lastName, email, password, isSubscribed} = user;
+        console.log(`Current session user:
+        \nfirst name:${firstName}
+        \nlast name: ${lastName}
+        \nemail: ${email}
+        \npassword: ${password}
+        \nisSubscribed: ${isSubscribed}`);
+        return user;
+    }
+    removeSession = () => this.currentUser = this.emptySession();
+}
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -251,9 +270,11 @@ loadMoreBtn.addEventListener("click", function () {
 const users = new Users();
 const posts = new Posts();
 const postService = new PostService();
+const modalService = new ModalService();
 
+modalService.removeSession();
 
-const userJsonPath = "source/data/json/userData.json";
+const userJsonPath = "source/data/json/userDATA.json";
 const postJsonPath = "source/data/json/postData.json";
 const userData = await getDataFromJson(userJsonPath);
 users.writeUsers(userData);
@@ -342,10 +363,7 @@ console.log(postData);
 export {postService};
 
 
-let registeredUsername = '';
-let registeredPassword = '';
-let currentUser = null;
-let newsletterEmail = '';
+
 
 //display modal function
 function showModal(modalId) {
@@ -366,24 +384,37 @@ function hideModal(modalId) {
 document.getElementById('signUpForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    registeredUsername = document.getElementById('signUpUsername').value;
-    registeredPassword = document.getElementById('signUpPassword').value;
-
-    console.log('User Signed Up:', { registeredUsername, registeredPassword });
-
-    document.getElementById('signUpForm').reset();
-    hideModal('signUpModal');
+    let registeredFirstname = document.getElementById('signUpFirstName').value;
+    let registeredLastName = document.getElementById('signUpLastName').value;
+    let registeredEmail = document.getElementById('signUpEmail').value;
+    let registeredPassword = document.getElementById('signUpPassword').value;
+    console.log(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
+    if(!users.storage.some(x => x.email === registeredEmail)){
+        console.log('User Signed Up:', { registeredEmail, registeredPassword });
+        users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
+        alert("Successfully registered!");
+        document.getElementById('signUpForm').reset();
+        hideModal('signUpModal');
+    } else{
+        alert("Email is already registered, please try logging in or use a different email!");
+        document.getElementById('signUpForm').reset();
+    }
 });
 
-// login modal logic for checking vales from signup modal
+// login modal logic for checking values from signup modal
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
+    let email = document.getElementById('loginEmail').value;
+    let password = document.getElementById('loginPassword').value;
+    console.log(email, password);
 
-    if (username === registeredUsername && password === registeredPassword) {
-        currentUser = username;
+    if (users.storage.some(x => x.email === email &&
+                                x.password === password)) 
+    {
+        
+        modalService.currentUser = users.storage.find(x => x.email === email &&
+                                                           x.password === password);
         updateNavbar();
         hideModal('loginModal');
     } else {
@@ -395,7 +426,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
 //changes the logout button
 document.getElementById('logoutBtn').addEventListener('click', function() {
-    currentUser = null;
+    modalService.removeSession();
     updateNavbar();
 });
 
@@ -425,13 +456,13 @@ function updateNavbar() {
     const logoutBtn = document.getElementById('logoutBtn');
     const createPostBtn = document.getElementById('createPostBtn');
 
-    if (currentUser) {
-        loggedInUser.textContent = `Logged in as: ${currentUser}`;
+    if (modalService.currentUser.firstName != null) {
+        loggedInUser.textContent = `Logged in as: ${modalService.currentUser.fullName()}`;
         loginBtn.style.display = 'none';
         createPostBtn.style.display = 'inline-block';
         logoutBtn.style.display = 'inline-block';
     } else {
-        loggedInUser.textContent = '';
+        loggedInUser.textContent = 'You\'re not logged in!';
         loginBtn.style.display = 'inline-block';
         createPostBtn.style.display = 'none';
         logoutBtn.style.display = 'none';

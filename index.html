@@ -168,10 +168,10 @@
             <h2>Log In</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <input type="text" id="loginUsername" placeholder="Enter your E-mail here" name="loginUsername" required>
+                    <input type="text" id="loginEmail" placeholder="E-mail" name="loginEmail" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="loginPassword" placeholder="Enter your password here" name="loginPassword" required>
+                    <input type="password" id="loginPassword" placeholder="Password" name="loginPassword" required>
                 </div>
                 <button type="submit">Log In</button>
             </form>
@@ -186,11 +186,15 @@
             <h5>Please fill up the form below </h5>
             <form id="signUpForm">
                 <div class="form-group">
-                    <label for="signUpUsername">E-mail</label>
-                    <input type="text" id="signUpUsername" placeholder="E-mail" name="signUpUsername" required>
+                    <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" required>
                 </div>
                 <div class="form-group">
-                    <label for="signUpPassword">Password</label>
+                    <input type="text" id="signUpLastName" placeholder="Last Name" name="signUpLastName" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signUpEmail" placeholder="E-mail" name="signUpEmail" required>
+                </div>
+                <div class="form-group">
                     <input type="password" id="signUpPassword" placeholder="Password" name="signUpPassword" required>
                 </div>
                 <button type="submit">Sign Up</button>

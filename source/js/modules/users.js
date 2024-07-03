@@ -12,9 +12,21 @@ export class Users {
         return !newUser ? "Invalid entries" : this.storage.push(newUser);
         
     }
+    emptyUser(){
+        let empty = {
+            firstName: null,
+            lastName: null,
+            email: null,
+            password: null,
+            isSubscribed: false
+        };
+        return empty;
+    }
     printUsers = () => this.storage.forEach(x => console.log(`id: ${x.id}\nname:${x.fullName()}\nemail: ${x.email}\npassword: ${x.password}\nisSubscribed: ${x.isSubscribed}`));
     writeUsers = (userData) => {
         for (const item of userData) {
         this.newUser(item.first_name, item.last_name, item.email, item.password);
     }}
+
+
 }
