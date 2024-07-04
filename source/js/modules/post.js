@@ -2,7 +2,7 @@ import { Comment } from "./comment.js";
 
 import { Base } from "./base.js"
 export class Post extends Base{
-    constructor(id, imgSrc, title, text, tags, authorId, stars, postingTime = new Date()){
+    constructor(id, imgSrc, title, text, tags, authorId, stars, postingTime = new Date().toISOString().slice(0, 10)){
         super(id);
         this.imgSrc = imgSrc;
         this.title = title;

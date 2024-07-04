@@ -46,7 +46,7 @@
                                         alt="Brightness" style="width: 20px; height: 20px;"></button>
                             </li>
                             <li class="nav-item">
-                                <button type="button" class="btn btn-success" id="createPostBtn" style="display: none;">Create Post</button>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPostModal" id="createPostBtn" style="display: none;">Create Post</button>
                             </li>
                             <li class="nav-item">
                                 <button type="button" class="btn btn-danger" id="logoutBtn" style="display: none;">Log Out</button>
@@ -208,6 +208,7 @@
             <h2>Subscribe to our Tech Blog Newsletter!</h2>
             <form id="newsletterForm">
                 <div class="form-group">
+                    <p id="subscibeModalInfo"></p>
                     <input type="email" id="newsletterEmail" placeholder="Please enter your email here!" name="newsletterEmail" required>
                 </div>
                 <button type="submit">Subscribe</button>
@@ -223,7 +224,107 @@
             <button id="unsubscribeBtn">Unsubscribe</button>
         </div>
     </div>
-
+    <!-- design for creating post modal -->
+    <div class="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="createPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="justify-content: center;">
+              <h5 class="modal-title">Create a new post</h5>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group" style="justify-content: center;">
+                    <label for="newPostTitle" style="text-align: center;">Post Title</label>
+                    <input type="text" class="form-check" id="newPostTitle" placeholder="Enter post title here!" required>
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <label for="validationTextarea">Post text</label>
+                    <textarea class="form-control" id="newPostText" placeholder="Please enter the post text here" required></textarea>
+                    
+                </div>
+                <hr>
+                <div id="addTagToPost" class="custom-control custom-checkbox">
+                    <p>Choose a desired tag or tags below</p>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="technology" id="addTechnologyTag">
+                        <label class="custom-control-label" for="addTechnologyTag">
+                            Technology
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="data" id="addDataTag">
+                        <label class="custom-control-label" for="addDataTag">
+                            Data
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="cybersecurity" id="addCybersecurityTag">
+                        <label class="custom-control-label" for="addCybersecurityTag">
+                            Cybersecurity
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="coding" id="addCodingTag">
+                        <label class="custom-control-label" for="addCodingTag">
+                            Coding
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="gadgets" id="addGadgetsTag">
+                        <label class="custom-control-label" for="addGadgetsTag">
+                            Gadgets
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="digital" id="addDigitalTag">
+                        <label class="custom-control-label" for="addDigitalTag">
+                            Digital
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="AI" id="addAiTag">
+                        <label class="custom-control-label" for="addAiTag">
+                            AI
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="internet" id="addInternetTag">
+                        <label class="custom-control-label" for="addInternetTag">
+                            Internet
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="innovation" id="addInnovationTag">
+                        <label class="custom-control-label" for="addInnovationTag">
+                            Innovation
+                        </label>
+                    </div>
+                    <div class="custom-control">
+                        <input class="custom-control-input" type="checkbox" value="software" id="addSoftwareTag">
+                        <label class="custom-control-label" for="addSoftwareTag">
+                            Software
+                        </label>
+                    </div>
+                </div>
+                <hr>
+                <label for="imgRange">Choose from existing images (1-30)</label>
+                <output id="rangeValue"></output>
+                <input type="range" class="form-control-range" min="1" max="30" value="15" id="imgRange" oninput="rangeValue.value=imgRange.value" >
+                <div class="form-group" >
+                <label for="exampleFormControlFile1">Upload image - <small>Coming soon...</small></label>
+                <input type="file" class="form-control-file" id="uploadImage" disabled>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="close" id="closeCreatePostModal">Close</button>
+              <button type="button" class="btn btn-success" id="newPostBtn">Create post</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <footer>
         <div class="col-md-auto " id="loadMoreDiv"><button class="btn btn-primary" type="button" id="loadMoreBtn">Load More</button></div>  

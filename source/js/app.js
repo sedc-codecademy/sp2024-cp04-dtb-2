@@ -488,6 +488,21 @@ document.getElementById('showSignUpBtn').addEventListener('click', function() {
     hideModal('loginModal');
     showModal('signUpModal');
 });
+//Creating post listener
+document.getElementById('createPostBtn').addEventListener('click', function() {
+    showModal('createPostModal');
+});
+document.getElementById('newPostBtn').addEventListener('click',()=>{
+    let postTitle = document.getElementById('newPostTitle').value ;
+    let postText = document.getElementById('newPostText').value ;
+    let postTags = Array.from(document.querySelectorAll('.custom-control-input:checked')).map(cb => cb.value);
+    let imageNumber = document.getElementById('imgRange').value ;
+    posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1],[users.storage[modalService.currentUser.id - 1]]);
+    hideModal('createPostModal');
+    newPostsLoader(posts.storage);
+
+})
+
 
 //closing open modals when clinked on the background
 document.querySelectorAll('.close').forEach(closeBtn => {
@@ -496,6 +511,7 @@ document.querySelectorAll('.close').forEach(closeBtn => {
         hideModal(modal.id);
     });
 });
+document.getElementById('closeCreatePostModal').addEventListener('click', ()=> hideModal('createPostModal'));
 
 window.addEventListener('click', function(event) {
     const modal = document.querySelector('.modal.show');
