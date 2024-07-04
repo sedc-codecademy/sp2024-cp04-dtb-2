@@ -522,3 +522,4 @@ window.addEventListener('click', function(event) {
 
 //updates the navbar
 updateNavbar();
+
