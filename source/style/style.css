@@ -70,10 +70,7 @@ body.dark-mode .navbar-nav .nav-link {
     color: white !important;
 }
 #filterDiv {
-    display: flex;
-    align-items: center;
-    padding-right: 0%;
-    margin: 0%;
+    width: 100px;
 }
 main {
     margin-top: 20px;
@@ -87,15 +84,39 @@ main {
 #dropdownMenuClickableInside {
     background-color: transparent;
     border: 0;
-    color: black;    
+    color: black; 
+    margin-left: 1vw ;
+}
+#tagFilterDropdown {
+    max-width: fit-content;
+    justify-content: center;
     
 }
-
 #loadMoreDiv {
     display: flex;
     justify-content: center;
 }
-
+.form-check {
+    margin-left: 1vw ;
+    width: fit-content;
+}
+@media (max-width: 1000px) {
+    .nav-item {
+        margin: 0.5vw;
+    }
+    #dropdownMenuClickableInside {
+        background-color: transparent;
+        border: 0;
+        color: black; 
+        margin-left: 2vw ;
+        
+    }
+    .form-check {
+        margin-left: 1vw ;
+        /* display: flex; */
+        /* justify-content: space-evenly; */
+    }
+}
 @media (max-width: 768px) { 
     #contentPartDiv {
         justify-content: center;
@@ -109,6 +130,11 @@ main {
     .card {
         width: 90vw; 
     }
+    .form-check {
+        margin-left: 2vw ;
+        /* display: flex; */
+        /* justify-content: space-evenly; */
+    }
 }
 
 @media (max-width: 576px) { 
@@ -116,11 +142,14 @@ main {
         display: flex;
         justify-content: center;
     } */
-    
+    #contentPartDiv {
+        padding-left: 3.5vw;
+        justify-items: center;
+    }
     #contentPart {
         
-        grid-template-columns: 1fr; 
-        justify-content: center;  
+        grid-template-columns: 1fr;
+        justify-items: center;
        
     }
     .card {
@@ -139,24 +168,13 @@ main {
         display: flex;
         justify-content: center;
     }
-    
+    .form-check {
+        margin-left: 3vw ;
+        /* display: flex; */
+        /* justify-content: space-evenly; */
+    }
+   
 }
-
-
-
-/* #tagFilterDropdown {
-    display: none;
-    min-width: 160px;
-    background-color: white;
-    color: black;
-    padding-left: 15px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-     z-index: 1; 
-    width: 7vw;
-    position: sticky; 
-    position : absolute;
-    left: 160px;
-} */
 
 #postImage {
     max-width: 30rem;

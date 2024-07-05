@@ -125,7 +125,11 @@ class PostService {
                                     <img src="./source/data/icons/chat-right.svg" alt="Comment Icon">
                                     <p>Comments</p>
                                 </div>
-                        </div>  
+                            </div>
+                            <div class="tags">
+                                <p>Tags: ${x.tags}</p>
+                            </div>  
+                        </div>
                     `;
     
                     this.loadedPosts.push(x);
@@ -305,8 +309,12 @@ document.getElementById("mostPopular").addEventListener("click", function(){
     mostPopularPostsLoader(posts.storage,posts.selectedFilter);
 })
 document.getElementById("srcIcon").addEventListener("click", function() {
-    // if(document.getElementById("searchInput").getAttribute("style") == "display:none"){
-    //     document.getElementById("searchInput").setAttribute
+    
+    // const 
+    
+    // if(document.getElementById("searchInput").getAttribute("display") == "none"){
+    //     // document.getElementById("searchInput").setAttribute("style",dis)
+    //     console.log("The thing works")
     // }
     searchPostsLoader(posts.storage);
 });
@@ -457,12 +465,12 @@ function updateNavbar() {
     const createPostBtn = document.getElementById('createPostBtn');
 
     if (modalService.currentUser.firstName != null) {
-        loggedInUser.textContent = `Logged in as: ${modalService.currentUser.fullName()}`;
+        // loggedInUser.textContent = `Logged in as: ${modalService.currentUser.fullName()}`;
         loginBtn.style.display = 'none';
         createPostBtn.style.display = 'inline-block';
         logoutBtn.style.display = 'inline-block';
     } else {
-        loggedInUser.textContent = 'You\'re not logged in!';
+        // loggedInUser.textContent = 'You\'re not logged in!';
         loginBtn.style.display = 'inline-block';
         createPostBtn.style.display = 'none';
         logoutBtn.style.display = 'none';
