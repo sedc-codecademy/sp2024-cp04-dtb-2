@@ -1,6 +1,7 @@
 import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
+import { Newsletter } from "./modules/newsletterService.js";
 import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
 
 class ModalService {
@@ -275,6 +276,7 @@ const users = new Users();
 const posts = new Posts();
 const postService = new PostService();
 const modalService = new ModalService();
+const newsletterService = new Newsletter();
 
 modalService.removeSession();
 
@@ -441,21 +443,18 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 //displayes the currently subscribed email in the unsubscribe modal
 document.getElementById('newsletterForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
-    newsletterEmail = document.getElementById('newsletterEmail').value;
-
-    console.log('Subscribed to Newsletter:', { newsletterEmail });
+    const emailInput = document.getElementById('newsletterEmail').value;
+    newsletterService.addNewSubscriber(emailInput);
 
     document.getElementById('newsletterForm').reset();
-    hideModal('subscribeModal');
 });
+document.getElementById('newsletterUnsubscribeForm').addEventListener('submit',(event)=>{
+    event.preventDefault();
+    const emailInput = document.getElementById('unsubNewsletterEmail').value;
+    newsletterService.removeSubscriber(emailInput);
+    document.getElementById('newsletterUnsubscribeForm').reset();
+})
 
-//logic for showing aproppriate modal for newsletter
-document.getElementById('unsubscribeBtn').addEventListener('click', function() {
-    newsletterEmail = '';
-    hideModal('unsubscribeModal');
-    showModal('subscribeModal');
-});
 
 //changes the button from login to logout and displays the currently loggin user
 function updateNavbar() {
@@ -479,13 +478,16 @@ function updateNavbar() {
 
 //logic frr displaying newsletter and and NL unsubscribe modal
 document.getElementById('newsletterBtn').addEventListener('click', function() {
-    if (newsletterEmail) {
-        document.getElementById('currentEmail').textContent = newsletterEmail;
-        showModal('unsubscribeModal');
-    } else {
+    if (modalService.currentUser.email == null) {
+        document.getElementById('subscibeModalInfo').innerText = '';
         showModal('subscribeModal');
-    }
+    } 
 });
+document.getElementById('showUnsubscribeBtn').addEventListener('click', ()=>{
+    hideModal('subscribeModal');
+    document.getElementById('unsubscibeModalInfo').innerHTML = "";
+    showModal('unsubscribeModal');
+})
 
 //login event listener
 document.getElementById('loginBtn').addEventListener('click', function() {
@@ -527,6 +529,8 @@ window.addEventListener('click', function(event) {
         hideModal(modal.id);
     }
 });
+
+
 
 //updates the navbar
 updateNavbar();

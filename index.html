@@ -250,12 +250,13 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Subscribe to our Tech Blog Newsletter!</h2>
+            <small><p>Want to <span><small><a id="showUnsubscribeBtn" style="color: red;" >Unsubscribe</a></small></span>? </p></small>
             <form id="newsletterForm">
                 <div class="form-group">
                     <p id="subscibeModalInfo"></p>
                     <input type="email" id="newsletterEmail" placeholder="Please enter your email here!" name="newsletterEmail" required>
                 </div>
-                <button type="submit">Subscribe</button>
+                <button type="submit" id="subscribeToNewsBtn">Subscribe</button>
             </form>
         </div>
     </div>
@@ -264,8 +265,13 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Unsubscribe from Newsletter</h2>
-            <p>Your current subscription email is: <span id="currentEmail"></span></p>
-            <button id="unsubscribeBtn">Unsubscribe</button>
+            <form id="newsletterUnsubscribeForm">
+                <div class="form-group">
+                    <p id="unsubscibeModalInfo"></p>
+                    <input type="email" id="unsubNewsletterEmail" placeholder="Please enter your email here!" name="unsubNewsletterEmail" required>
+                </div>
+                <button type="submit" id="unsubscribeBtn">Unsubscribe</button>
+            </form>
         </div>
     </div>
     <!-- design for creating post modal -->
@@ -284,7 +290,7 @@
                 </div>
                 <hr>
                 <div class="mb-3">
-                    <label for="validationTextarea">Post text</label>
+                    <label for="newPostText">Post text</label>
                     <textarea class="form-control" id="newPostText" placeholder="Please enter the post text here" required></textarea>
                     
                 </div>
@@ -357,7 +363,7 @@
                 <output id="rangeValue"></output>
                 <input type="range" class="form-control-range" min="1" max="30" value="15" id="imgRange" oninput="rangeValue.value=imgRange.value" >
                 <div class="form-group" >
-                <label for="exampleFormControlFile1">Upload image - <small>Coming soon...</small></label>
+                <label for="uploadImage">Upload image - <small>Coming soon...</small></label>
                 <input type="file" class="form-control-file" id="uploadImage" disabled>
                 </div>
               </form>
