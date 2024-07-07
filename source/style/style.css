@@ -305,6 +305,9 @@ a:hover {
     padding: 5px 10px;
     cursor: pointer;
 }
+#commentText {
+    width: 100%;
+}
 #backBtn {
     display: none;
 }

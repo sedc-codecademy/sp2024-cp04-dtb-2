@@ -114,12 +114,13 @@ class PostService {
                 //     postService.lastPageLoaded.pop()
                 //     postService.lastPageLoaded.pop()
                 // }
-            } else {console.log("doesnt work")
-                postService.loadMoreBtn.style.display = "block";
-                postService.filterDiv.style.display = "block";
-                postService.backBtn.style.display = "none";
-                postService.renderPosts(postService.loadedPosts);
             }
+            // } else {console.log("doesnt work")
+            //     postService.loadMoreBtn.style.display = "block";
+            //     postService.filterDiv.style.display = "block";
+            //     postService.backBtn.style.display = "none";
+            //     postService.renderPosts(postService.loadedPosts);
+            // }
         })
 
 
@@ -161,9 +162,9 @@ class PostService {
                                 case "authorPosts":
                                     postService.loadMore(postsByAuthor);
                                     break;
-                                default:
-                                    postService.loadMore(posts.storage);  // -- obsolete
-                                    break;
+                                // default:
+                                //     postService.loadMore(posts.storage);  // -- obsolete
+                                //     break;
                             }
                         }, 1250);
                     }
@@ -179,7 +180,7 @@ class PostService {
         loadedPosts = [];
         loadedSinglePost = null;
         openedPostId = [];
-        
+        commentPostId = null;
 
         renderPosts = (posts) => {
             postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
@@ -263,65 +264,65 @@ class PostService {
   </div>
   <br>
   <br>
+  <hr>
+    <div class="ad-banner">
+        <h1>QINSHIFT</h1>
+        <p>The Change Begins Here! <a href="https://qinshiftacademy.com/" target="_blank">Click to learn more</a></p>
+    </div><hr><br>
+    
+
     
     <div class="comments">
-        <!-- Existing comments... -->
-            <div class="comments">
-        <!-- Logged-in user comment -->
-        <div class="comment">
-            <span class="user">John Doe (Logged In)</span>
-            <span class="date">Posted on June 14, 2024</span>
-            <p>This is a great article! Keep up the good work.</p>
-            <button class="like-button">Like</button>
+    <!-- Comment form -->
+        <div class="comment-form">
+            <h3>Add a Comment</h3>
+            <form id="commentForm">
+                <input type= "text" id = "commentName" placeholder="Name (optional)">
+                <label for="commentText">Your Comment:</label>
+                <textarea type="text" id="commentText" name="commentText" placeholder="Type your comment here..."></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
         </div>
-
-        <!-- Anonymous user comment -->
-        <div class="comment">
-            <span class="user">Anonymous</span>
-            <span class="date">Posted on June 15, 2024</span>
-            <p>Interesting read. Thanks for sharing!</p>
-            <button class="like-button">Like</button>
-        </div>
+        <br>
+        <br>
+        
         <div id="addedComments"> 
         </div>
         <!-- Add more comments here... -->
     </div>
-        <!-- Comment form -->
-        <div class="comment-form">
-            <h3>Add a Comment</h3>
-            <form id="commentForm">
-                <label for="commentText">Your Comment:</label>
-                <input type="text" id="commentText" name="commentText" placeholder="Type your comment here...">
-                <label for="anonymous">Comment Anonymously:</label>
-                <input type="checkbox" id="anonymous" name="anonymous">
-                <button type="submit">Post Comment</button>
-            </form>
-        </div>
+        
     </div>
-    <br><br><hr>
-                        <div class="ad-banner">
-        <h1>QINSHIFT</h1>
-        <p>The Change Begins Here! <a href="https://qinshiftacademy.com/">Click to learn more</a></p>
-    </div><hr><br>`
+    <br><br>`
     // document.getElementById("comments").innerHTML = `
     // it works
     // `
+    document.getElementById("commentForm").addEventListener("submit",function(event){
+        event.preventDefault();
+        console.log("it kinda works")
+        let commentName = document.getElementById("commentName").value;
+        let commentText = document.getElementById("commentText").value;
+        let post = posts.storage.find(x=> x.id == postService.commentPostId);
+        let indexPost = posts.storage.indexOf(post);
+        posts.storage[indexPost].addComment(commentName,commentText);
+        displayComments();
+    });
+
     document.getElementById("postAuthorId").addEventListener('click',()=>{
         postService.lastPageLoaded.push("author");
         postService.lastAuthor = this.loadedSinglePost.authorId;
         authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
     });
-let testComment = document.getElementById("commentForm");
+// let testComment = document.getElementById("commentForm");
 
-testComment.addEventListener("click", function (e) {
-    e.preventDefault();
-    const commentText = document.getElementById("commentText").value;
-    const isAnonymous = document.getElementById("anonymous").checked;
+// testComment.addEventListener("click", function (e) {
+//     e.preventDefault();
+//     const commentText = document.getElementById("commentText").value;
+//     const isAnonymous = document.getElementById("anonymous").checked;
 
-    // Process the comment (you can send it to a server or handle it as needed)
-    console.log("Comment:", commentText);
-    console.log("Anonymous:", isAnonymous);
-});
+//     // Process the comment (you can send it to a server or handle it as needed)
+//     console.log("Comment:", commentText);
+//     console.log("Anonymous:", isAnonymous);
+// });
 lightDarkChek();        
 }
 
@@ -344,6 +345,7 @@ lightDarkChek();
 let getPostId = function(){
         let postId = this.getAttribute("value");
         postService.openedPostId.push(postId);
+        postService.commentPostId = postId;
         postService.selectedFilter = null;
         postService.openPost(postId);
 }
@@ -363,8 +365,9 @@ loadMoreBtn.addEventListener("click", function () {
         
     } else if (postService.selectedFilter == "searchedPosts") {
         postService.loadMore(filteredPosts);
-    }else {
-        postService.loadMore(posts.storage);
+    }
+    else {
+        // postService.loadMore(posts.storage);
     }
 });
 
@@ -381,7 +384,7 @@ const postJsonPath = "source/data/json/postData.json";
 const userData = await getDataFromJson(userJsonPath);
 users.writeUsers(userData);
 users.newUser("Sasho", "Popovski", "example@mail.com", "easyGuessPassword123", true);
-users.newUser("Daniel", "Petrov", "example2@mail.com", "easyGuessPassword1234");
+users.newUser("Daniel", "Petrov", "example2@mail.com", "12345");
 users.newUser("Boris","Krstovski",'borisk@lala.com','123456');
 users.newUser("Test","Testing",'test@lala.com','123456');
 
@@ -667,3 +670,19 @@ document.getElementById("monthModalForm").addEventListener("submit", function(ev
     let dateValue = document.getElementById("dateValue").value;
     monthYear(posts.storage, dateValue);
 });
+
+
+function displayComments() {
+    document.getElementById("addedComments").innerHTML = ""
+    let post = posts.storage.find(x=> x.id == postService.commentPostId);
+    for (let x of post.comments){
+        document.getElementById("addedComments").innerHTML += `
+        <div class="comment">
+            <span class="user">${x.username}</span>
+            <span class="date">${x.date}</span>
+            <p>${x.text}</p>
+        </div>
+    `
+    }
+    
+}

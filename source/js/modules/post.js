@@ -15,14 +15,14 @@ export class Post extends Base{
         this.postingTime = postingTime;
     }
 
-    addComment = (name, comment) => this.comments.Push(new Comment(comment, name));
-    displayComments() {
-        document.getElementById("addedComments").innerHTML += `
-        it works
-        `
+    addComment = (name, comment) => this.comments.push(new Comment(comment, name));
+    // displayComments() {
+    //     document.getElementById("addedComments").innerHTML += `
+    //     it works
+    //     `;
         
         
-    }
+    // }
 
 
     addStar = (userId) => !this.stars.some(x => x.userId = userId) ? this.stars.Push(userId)

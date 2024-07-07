@@ -3,5 +3,6 @@ export class Comment{
         name.length < 2 ? this.username = "Anonymous" 
                         : this.username = name;
         this.text = text;
+        this.date = new Date();
     }
 }

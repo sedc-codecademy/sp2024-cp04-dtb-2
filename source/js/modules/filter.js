@@ -59,8 +59,18 @@ export function authorPostsLoader(posts, id) {
 }
 export function monthYear(posts, dateValue) {
     postService.selectedFilter = "monthYear";
-    let splicedPosts = posts.forEach (x => x.postingTime.slice(x.length-1,3));
-    monthYearPosts = splicedPosts.filter(x => x.postingTime === dateValue);
+    
+    // Use map to create a new array with transformed postingTime
+    let splicedPosts = posts.map(post => {
+        // Assuming postingTime is a string, take the first part (e.g., "2023-07" for "2023-07-07T12:34:56")
+        post.postingTime = post.postingTime.slice(0, 7); // Keeping the first 7 characters (YYYY-MM)
+        return post;
+    });
+
+    // Filter posts based on the dateValue
+    let monthYearPosts = splicedPosts.filter(post => post.postingTime === dateValue);
+
+    // Render the filtered posts
+    document.getElementById('contentPart').innerHTML = "";
     postService.renderPosts(monthYearPosts);
 }
-//splice
