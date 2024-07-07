@@ -260,7 +260,7 @@ a:hover {
     color: green;
 }
 #logoImg:hover{
-    cursor: grab;
+    cursor: pointer;
 }
   .comments {
     max-width: 600px;

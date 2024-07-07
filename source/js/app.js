@@ -207,16 +207,18 @@ class PostService {
                             <div class="card-body icons">
                                 <div> 
                                     <img src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon">
-                                    <p>${x.stars.length}Stars</p>
+                                    <p>${x.stars.length} Stars</p>
                                 </div>
                                 <div>
                                     <img src="./source/data/icons/chat-right.svg" alt="Comment Icon" class="commentsIcon">
-                                    <p>Comments</p>
+                                    <p>${x.comments.length} Comments</p>
                                 </div>
-                            </div>
-                            <div class="tags">
-                                <p>Tags: ${x.tags}</p>
+                                <br>
+                                <div class="tags">
+                                <p><small>Tags: ${x.tags}</small></p>
                             </div>  
+                            </div>
+                            
                         </div>
                     `;
     
@@ -306,6 +308,7 @@ class PostService {
         posts.storage[indexPost].addComment(commentName,commentText);
         displayComments();
     });
+    displayComments();
 
     document.getElementById("postAuthorId").addEventListener('click',()=>{
         postService.lastPageLoaded.push("author");
@@ -675,6 +678,12 @@ document.getElementById("monthModalForm").addEventListener("submit", function(ev
 function displayComments() {
     document.getElementById("addedComments").innerHTML = ""
     let post = posts.storage.find(x=> x.id == postService.commentPostId);
+    if(post.comments.length == 0){
+        document.getElementById("addedComments").innerHTML = `
+        <div class="comment" style="text-align: center">
+        <p>Be the first to comment!</p>
+        </div>`
+    }
     for (let x of post.comments){
         document.getElementById("addedComments").innerHTML += `
         <div class="comment">
