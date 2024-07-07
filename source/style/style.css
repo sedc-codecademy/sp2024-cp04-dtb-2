@@ -244,6 +244,9 @@ a:hover {
     text-align: center;
     color: green;
 }
+#logoImg:hover{
+    cursor: grab;
+}
   .comments {
     max-width: 600px;
     margin: 0 auto;

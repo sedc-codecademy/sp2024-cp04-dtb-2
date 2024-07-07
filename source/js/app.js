@@ -36,12 +36,18 @@ class PostService {
         this.firstScrollReached = false;
         this.filterDiv = document.getElementById("filterDiv");
         this.backBtn = document.getElementById("backBtn");
+        this.logoImg = document.getElementById('logoImg');
         
         homeBtn.addEventListener('click',()=>{
-            newPostsLoader(posts.storage,posts.selectedFilter)
+            newPostsLoader(posts.storage)
             this.loadMoreBtn.style.display = 'block';
 
         });
+        logoImg.addEventListener('click',()=>{
+            newPostsLoader(posts.storage)
+            this.loadMoreBtn.style.display = 'block';
+        })
+
 
         window.addEventListener('scroll', function() {
             if(postService.selectedFilter == null){
