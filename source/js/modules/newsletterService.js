@@ -12,6 +12,7 @@ export class Newsletter{
         }
         else {
             this.storage.push(email)
+            document.getElementById('newsletterEmail').style.visibility = 'hidden';
             document.getElementById('subscibeModalInfo').style.color= 'green';
             document.getElementById('subscibeModalInfo').innerHTML = "Successfully subscribed!"
         };
@@ -34,14 +35,12 @@ export class Newsletter{
         document.getElementById('showUnsubscribeText').style.visibility = 'hidden';
         document.getElementById('newsletterEmail').value = currentUserEmail;
         document.getElementById('newsletterEmail').disabled = true;
-        modalService.currentUser.isSubscribed = true;
         
     }
     unsubscribeLoggedUser(){
         let currentUserEmail = modalService.currentUser.email;
         document.getElementById('unsubNewsletterEmail').value = currentUserEmail;
         document.getElementById('unsubNewsletterEmail').disabled = true;
-        modalService.currentUser.isSubscribed = false;
 
     }
 

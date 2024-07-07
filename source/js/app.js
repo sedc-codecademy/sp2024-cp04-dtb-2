@@ -546,19 +546,29 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 //displayes the currently subscribed email in the unsubscribe modal
 document.getElementById('newsletterForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    if(!modalService.currentUser.isSubscribed  && modalService.currentUser.email != null ){
+        modalService.currentUser.isSubscribed = true;
+        newsletterService.addNewSubscriber(modalService.currentUser.email);
+    }
+    else{
     const emailInput = document.getElementById('newsletterEmail').value;
     document.getElementById('newsletterEmail').style.visibility = 'hidden';
     newsletterService.addNewSubscriber(emailInput);
 
     document.getElementById('newsletterForm').reset();
-});
+}});
 document.getElementById('newsletterUnsubscribeForm').addEventListener('submit',(event)=>{
     event.preventDefault();
+    if(modalService.currentUser.isSubscribed && modalService.currentUser.email != null ){
+        modalService.currentUser.isSubscribed = false;
+        newsletterService.removeSubscriber(modalService.currentUser.email);
+    }
+    else{
     const emailInput = document.getElementById('unsubNewsletterEmail').value;
     document.getElementById('unsubNewsletterEmail').style.visibility = 'hidden';
     newsletterService.removeSubscriber(emailInput);
     document.getElementById('newsletterUnsubscribeForm').reset();
-})
+}})
 
 
 //changes the button from login to logout and displays the currently loggin user
