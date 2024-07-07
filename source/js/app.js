@@ -49,8 +49,13 @@ class PostService {
             this.loadMoreBtn.style.display = 'block';
         });
         homeBtn.addEventListener('click',()=>{
-            newPostsLoader(posts.storage)
+            postService.loadMoreBtn.style.display = "block";
+            postService.filterDiv.style.display = "block";
+            postService.backBtn.style.display = "none";
+            this.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
+            newPostsLoader(posts.storage,posts.selectedFilter);
             this.loadMoreBtn.style.display = 'block';
+
         });
         
         backBtn.addEventListener("click", function(){
@@ -76,8 +81,8 @@ class PostService {
 
             
             postService.result.innerHTML = "";
-            if (postService.lastPageLoaded.length<2){}
-            if (postService.lastPageLoaded ==="about") {
+            // if (postService.lastPageLoaded.length<2){}
+            if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] ==="about") {
                 console.log("it is logged");
                 aboutUsPageLoader();
             } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "cards") { 
@@ -90,12 +95,14 @@ class PostService {
             } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "post") {
                 console.log(postService.lastPageLoaded)
                 console.log("post");
-                postService.openPost(postService.openedPostId);
-                console.log(postService.openedPostId)
-                if(hasDuplicates(postService.lastPageLoaded)) {
+                console.log(postService.openedPostId);
+                postService.openPost(postService.openedPostId[postService.openedPostId.length-1]);
+                console.log(postService.openedPostId);
+                postService.openedPostId.pop();
+                // if(hasDuplicates(postService.lastPageLoaded)) {
+                //     postService.lastPageLoaded.pop();
                     postService.lastPageLoaded.pop();
-                    postService.lastPageLoaded.pop();
-                }
+                // }
             } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "author"){
                 console.log("author")
                 authorPostsLoader(posts.storage, postService.lastAuthor);;
@@ -167,6 +174,7 @@ class PostService {
         idCounter = 0;
         loadedPosts = [];
         loadedSinglePost = null;
+        openedPostId = [];
         
 
         renderPosts = (posts) => {
@@ -224,6 +232,7 @@ class PostService {
         }
         renderSinglePost = (post) =>{
             window.scrollTo(0,0);
+            postService.lastPageLoaded.push("post");
             this.loadMoreBtn.style.display = "none";
             this.filterDiv.style.display = "none";
             this.backBtn.style.display = "block";
@@ -292,6 +301,8 @@ class PostService {
     // it works
     // `
     document.getElementById("postAuthorId").addEventListener('click',()=>{
+        postService.lastPageLoaded.push("author");
+        postService.lastAuthor = this.loadedSinglePost.authorId;
         authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
     });
 let testComment = document.getElementById("commentForm");
@@ -325,6 +336,7 @@ testComment.addEventListener("click", function (e) {
 } 
 let getPostId = function(){
         let postId = this.getAttribute("value");
+        postService.openedPostId.push(postId);
         postService.selectedFilter = null;
         postService.openPost(postId);
 }

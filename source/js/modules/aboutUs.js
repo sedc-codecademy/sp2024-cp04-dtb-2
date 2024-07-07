@@ -1,6 +1,7 @@
 import {postService} from "../app.js";
 
 export function aboutUsPageLoader() {
+    postService.lastPageLoaded.push("about");
     postService.selectedFilter = null;
     postService.loadMoreBtn.style.display = "none";
     postService.filterDiv.style.display = "none";
