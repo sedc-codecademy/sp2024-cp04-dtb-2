@@ -13,6 +13,8 @@
 
 <body>
     <header>
+        <div class="alert alert-success" role="alert" id="successAlert"></div>    
+        <div class="alert alert-warning" role="alert" id="warningAlert"></div>    
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -62,6 +64,7 @@
     </header>
 
     <main>
+        
             <div class="row">
                 
                 <div class="btn-group" id="filterDiv">
@@ -228,7 +231,8 @@
             <span class="close">&times;</span>
             <h2>Sign Up</h2>
             <h5>Please fill up the form below </h5>
-            <form id="signUpForm">
+            <form id="signUpForm" action="" method=post
+            oninput='signUpPasswordCheck.setCustomValidity(signUpPassword.value != signUpPasswordCheck.value ? "Passwords do not match." : "")'>
                 <div class="form-group">
                     <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" required>
                 </div>
@@ -240,6 +244,9 @@
                 </div>
                 <div class="form-group">
                     <input type="password" id="signUpPassword" placeholder="Password" name="signUpPassword" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signUpPasswordCheck" placeholder="Confirm password" name="signUpPasswordCheck" required>
                 </div>
                 <button type="submit">Sign Up</button>
             </form>

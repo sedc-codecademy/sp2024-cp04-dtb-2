@@ -479,11 +479,11 @@ document.getElementById('signUpForm').addEventListener('submit', function(event)
     if(!users.storage.some(x => x.email === registeredEmail)){
         console.log('User Signed Up:', { registeredEmail, registeredPassword });
         users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-        alert("Successfully registered!");
+        users.alert('successAlert',"Successfully registered!");
         document.getElementById('signUpForm').reset();
         hideModal('signUpModal');
     } else{
-        alert("Email is already registered, please try logging in or use a different email!");
+        users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
         document.getElementById('signUpForm').reset();
     }
 });
@@ -503,9 +503,10 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         modalService.currentUser = users.storage.find(x => x.email === email &&
                                                            x.password === password);
         updateNavbar();
+        users.alert('successAlert',`Successfully logged in. Hello ${modalService.currentUser.fullName()}!`);
         hideModal('loginModal');
     } else {
-        alert('Invalid username or password. Please try again.');
+        users.alert('warningAlert','Invalid username or password. Please try again.');
     }
 
     document.getElementById('loginForm').reset();

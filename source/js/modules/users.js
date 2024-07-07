@@ -27,6 +27,12 @@ export class Users {
         for (const item of userData) {
         this.newUser(item.first_name, item.last_name, item.email, item.password);
     }}
-
+    alert(alertId,message){
+        document.getElementById(alertId).innerText = message;
+        document.getElementById(alertId).style.display = 'block';
+        setTimeout(() => {
+            document.getElementById(alertId).style.display = 'none';
+        }, 3500);
+    }
 
 }

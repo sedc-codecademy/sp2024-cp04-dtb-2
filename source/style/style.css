@@ -200,7 +200,14 @@ a:hover {
 #aboutHeadDiv {
      text-align: center;
 }
-
+.alert {
+    width: 40vw;
+    position: absolute;
+    margin-left: 30vw;
+    z-index: 2;
+    text-align: center;
+    display: none;
+}
 
 #backToTopBtn {
     display: none; /* Hidden by default */
