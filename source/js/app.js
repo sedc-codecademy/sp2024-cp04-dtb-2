@@ -3,6 +3,7 @@ import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { Newsletter } from "./modules/newsletterService.js";
 import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
+import { aboutUsPageLoader } from "./modules/aboutUs.js";   
 
 class ModalService {
     constructor(){
@@ -38,6 +39,11 @@ class PostService {
         this.backBtn = document.getElementById("backBtn");
         this.logoImg = document.getElementById('logoImg');
         
+
+
+        aboutBtn.addEventListener("click", function (){
+            aboutUsPageLoader();
+        });
         homeBtn.addEventListener('click',()=>{
             newPostsLoader(posts.storage)
             this.loadMoreBtn.style.display = 'block';
