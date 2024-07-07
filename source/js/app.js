@@ -23,6 +23,8 @@ class ModalService {
     }
     removeSession = () => this.currentUser = this.emptySession();
 }
+
+
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -40,6 +42,9 @@ class PostService {
         this.backBtn = document.getElementById("backBtn");
 
 
+        
+
+
         aboutBtn.addEventListener("click", function (){
             aboutUsPageLoader();
         });
@@ -53,29 +58,30 @@ class PostService {
 
         });
         backBtn.addEventListener("click", function(){
-            // function hasDuplicates(array) {
-            //     // Sort the array
-            //     const sortedArray = array.slice().sort();
+            function hasDuplicates(array) {
+                // Sort the array
+                const sortedArray = array.slice().sort();
             
-            //     // Check for duplicates by comparing adjacent elements
-            //     for (let i = 0; i < sortedArray.length - 1; i++) {
-            //         if (sortedArray[i] === sortedArray[i + 1]) {
-            //             return true; // Duplicate found
-            //         }
-            //     }
-            //     return false; // No duplicates found
+                // Check for duplicates by comparing adjacent elements
+                for (let i = 0; i < sortedArray.length - 1; i++) {
+                    if (sortedArray[i] === sortedArray[i + 1]) {
+                        return true; // Duplicate found
+                    }
+                }
+                return false; // No duplicates found
+            }
+            
+            
+            
+            // } else {
+                postService.lastPageLoaded.pop()
+            
             // }
-            // if(hasDuplicates(postService.lastPageLoaded)) {
-            //     postService.lastPageLoaded.pop()
-            //     postService.lastPageLoaded.pop()
-            // } 
-            postService.lastPageLoaded.pop()
-
 
             
             postService.result.innerHTML = "";
+            if (postService.lastPageLoaded.length<2){}
             if (postService.lastPageLoaded ==="about") {
-                
                 console.log("it is logged");
                 aboutUsPageLoader();
             } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "cards") { 
@@ -90,9 +96,17 @@ class PostService {
                 console.log("post");
                 postService.openPost(postService.openedPostId);
                 console.log(postService.openedPostId)
+                if(hasDuplicates(postService.lastPageLoaded)) {
+                    postService.lastPageLoaded.pop()
+                    postService.lastPageLoaded.pop()
+                }
             } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "author"){
                 console.log("author")
                 authorPostsLoader(posts.storage, postService.lastAuthor);;
+                // if(hasDuplicates(postService.lastPageLoaded)) {
+                //     postService.lastPageLoaded.pop()
+                //     postService.lastPageLoaded.pop()
+                // }
             } else {console.log("doesnt work")
                 postService.loadMoreBtn.style.display = "block";
                 postService.filterDiv.style.display = "block";
