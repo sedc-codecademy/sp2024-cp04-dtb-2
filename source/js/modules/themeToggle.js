@@ -18,7 +18,7 @@ document.getElementById("lightDarkToggle").addEventListener("click", function(){
 
 
 
-    } else {
+    } else if(document.documentElement.getAttribute("data-bs-theme") == "light") {
         document.documentElement.setAttribute("data-bs-theme", "dark"); //dark Theme 
         document.getElementById("newsletterImg").setAttribute("src","./source/data/icons/envelopeWhite.svg");
         document.getElementById("srcIcon").setAttribute("src","./source/data/icons/searchWhite.svg");
