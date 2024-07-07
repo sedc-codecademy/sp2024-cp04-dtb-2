@@ -38,14 +38,71 @@ class PostService {
         this.backBtn = document.getElementById("backBtn");
         this.logoImg = document.getElementById('logoImg');
         
+        logoImg.addEventListener('click',()=>{
+            newPostsLoader(posts.storage);
+            this.loadMoreBtn.style.display = 'block';
+        });
         homeBtn.addEventListener('click',()=>{
             newPostsLoader(posts.storage)
             this.loadMoreBtn.style.display = 'block';
-
         });
-        logoImg.addEventListener('click',()=>{
-            newPostsLoader(posts.storage)
-            this.loadMoreBtn.style.display = 'block';
+        
+        backBtn.addEventListener("click", function(){
+            function hasDuplicates(array) {
+                // Sort the array
+                const sortedArray = array.slice().sort();
+            
+                // Check for duplicates by comparing adjacent elements
+                for (let i = 0; i < sortedArray.length - 1; i++) {
+                    if (sortedArray[i] === sortedArray[i + 1]) {
+                        return true; // Duplicate found
+                    }
+                }
+                return false; // No duplicates found
+            }
+            
+            
+            
+            // } else {
+                postService.lastPageLoaded.pop()
+            
+            // }
+
+            
+            postService.result.innerHTML = "";
+            if (postService.lastPageLoaded.length<2){}
+            if (postService.lastPageLoaded ==="about") {
+                console.log("it is logged");
+                aboutUsPageLoader();
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "cards") { 
+                postService.loadMoreBtn.style.display = "block";
+                postService.filterDiv.style.display = "block";
+                postService.backBtn.style.display = "none";
+                // postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
+                console.log("cards");
+                postService.renderPosts(postService.loadedPosts);
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "post") {
+                console.log(postService.lastPageLoaded)
+                console.log("post");
+                postService.openPost(postService.openedPostId);
+                console.log(postService.openedPostId)
+                if(hasDuplicates(postService.lastPageLoaded)) {
+                    postService.lastPageLoaded.pop();
+                    postService.lastPageLoaded.pop();
+                }
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "author"){
+                console.log("author")
+                authorPostsLoader(posts.storage, postService.lastAuthor);;
+                // if(hasDuplicates(postService.lastPageLoaded)) {
+                //     postService.lastPageLoaded.pop()
+                //     postService.lastPageLoaded.pop()
+                // }
+            } else {console.log("doesnt work")
+                postService.loadMoreBtn.style.display = "block";
+                postService.filterDiv.style.display = "block";
+                postService.backBtn.style.display = "none";
+                postService.renderPosts(postService.loadedPosts);
+            }
         })
 
 
@@ -107,6 +164,11 @@ class PostService {
         
 
         renderPosts = (posts) => {
+            postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
+            if (this.selectedFilter !== "authorPosts"){
+                this.lastAuthor = null;
+                this.lastPageLoaded = ["cards"]; 
+            }
             let copies = [...posts];
             console.log(posts)
             console.log("second posts")
@@ -124,12 +186,12 @@ class PostService {
                                 <p class="card-text">Do you want to read more?</p>
                             </div>
                             <div class="card-body icons">
-                                <div>
-                                    <img src="./source/data/icons/star.svg" alt="Star Icon">
+                                <div> 
+                                    <img src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon">
                                     <p>${x.stars.length}Stars</p>
                                 </div>
                                 <div>
-                                    <img src="./source/data/icons/chat-right.svg" alt="Comment Icon">
+                                    <img src="./source/data/icons/chat-right.svg" alt="Comment Icon" class="commentsIcon">
                                     <p>Comments</p>
                                 </div>
                             </div>
@@ -159,7 +221,8 @@ class PostService {
             this.loadMoreBtn.style.display = "none";
             this.filterDiv.style.display = "none";
             this.backBtn.style.display = "block";
-
+            console.log(postService.lastPageLoaded);
+            postService.result.setAttribute("style","max-width: none; max height: none; display: block ");
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
     <div class="row g-0">
       <div class="col-md-5">
@@ -219,7 +282,9 @@ class PostService {
         <h1>QINSHIFT</h1>
         <p>The Change Begins Here! <a href="https://qinshiftacademy.com/">Click to learn more</a></p>
     </div><hr><br>`
-
+    // document.getElementById("comments").innerHTML = `
+    // it works
+    // `
     document.getElementById("postAuthorId").addEventListener('click',()=>{
         authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
     });
@@ -561,5 +626,7 @@ window.addEventListener('click', function(event) {
 
 //updates the navbar
 updateNavbar();
+// displayComments();
+
 
 export{modalService};
