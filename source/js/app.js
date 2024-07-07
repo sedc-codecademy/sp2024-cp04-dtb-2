@@ -2,8 +2,9 @@ import { Posts } from "./modules/posts.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { Newsletter } from "./modules/newsletterService.js";
-import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
+import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor, monthYear } from "./modules/filter.js";
 import { aboutUsPageLoader } from "./modules/aboutUs.js";   
+import { lightDarkChek } from "./modules/themeToggle.js";
 
 class ModalService {
     constructor(){
@@ -38,15 +39,18 @@ class PostService {
         this.filterDiv = document.getElementById("filterDiv");
         this.backBtn = document.getElementById("backBtn");
         this.logoImg = document.getElementById('logoImg');
+        this.isDarkTheme = false;
         
 
 
         aboutBtn.addEventListener("click", function (){
             aboutUsPageLoader();
+            lightDarkChek();
         });
         logoImg.addEventListener('click',()=>{
             newPostsLoader(posts.storage);
             this.loadMoreBtn.style.display = 'block';
+            lightDarkChek();
         });
         homeBtn.addEventListener('click',()=>{
             postService.loadMoreBtn.style.display = "block";
@@ -55,11 +59,11 @@ class PostService {
             this.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
             newPostsLoader(posts.storage,posts.selectedFilter);
             this.loadMoreBtn.style.display = 'block';
-
+            lightDarkChek();
         });
         
         backBtn.addEventListener("click", function(){
-            function hasDuplicates(array) {
+            function hasDuplicates(array) { //obsolite
                 // Sort the array
                 const sortedArray = array.slice().sort();
             
@@ -220,6 +224,7 @@ class PostService {
                 }
                 this.rowCounter++;
                 this.counter++;
+                lightDarkChek();
             }
             let titlePostOpener = document.getElementsByClassName("post-link");
             Array.from(titlePostOpener).forEach(function(element) {
@@ -277,7 +282,8 @@ class PostService {
             <p>Interesting read. Thanks for sharing!</p>
             <button class="like-button">Like</button>
         </div>
-
+        <div id="addedComments"> 
+        </div>
         <!-- Add more comments here... -->
     </div>
         <!-- Comment form -->
@@ -316,7 +322,8 @@ testComment.addEventListener("click", function (e) {
     console.log("Comment:", commentText);
     console.log("Anonymous:", isAnonymous);
 });
-        }
+lightDarkChek();        
+}
 
         loadMore = (posts) => {
             let postsToLoad = posts.filter(post => !this.loadedPosts.includes(post));
@@ -640,8 +647,9 @@ window.addEventListener('click', function(event) {
         hideModal(modal.id);
     }
 });
-
-
+document.getElementById("lightDarkToggle").addEventListener("click", function(){
+    lightDarkChek();
+});
 
 //updates the navbar
 updateNavbar();
@@ -649,3 +657,13 @@ updateNavbar();
 
 
 export{modalService};
+
+
+document.getElementById("monthFilter").addEventListener("click",function(){
+    showModal("monthModal");
+});
+document.getElementById("monthModalForm").addEventListener("submit", function(event){
+    event.preventDefault();
+    let dateValue = document.getElementById("dateValue").value;
+    monthYear(posts.storage, dateValue);
+});

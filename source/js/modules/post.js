@@ -17,7 +17,7 @@ export class Post extends Base{
 
     addComment = (name, comment) => this.comments.Push(new Comment(comment, name));
     displayComments() {
-        document.getElementsByClassName("comments").innerHTML += `
+        document.getElementById("addedComments").innerHTML += `
         it works
         `
         

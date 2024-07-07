@@ -57,3 +57,10 @@ export function authorPostsLoader(posts, id) {
     postService.renderPosts(postsByAuthor);
 
 }
+export function monthYear(posts, dateValue) {
+    postService.selectedFilter = "monthYear";
+    let splicedPosts = posts.forEach (x => x.postingTime.slice(x.length-1,3));
+    monthYearPosts = splicedPosts.filter(x => x.postingTime === dateValue);
+    postService.renderPosts(monthYearPosts);
+}
+//splice

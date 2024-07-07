@@ -15,7 +15,7 @@ nav {
     
 }
 .card {
-    background-color: #f0efef;
+    /* background-color: #f0efef; */
     border: none;
 }
 .card:hover {
@@ -25,7 +25,7 @@ nav {
 .card-title{
     font-size: larger;
     font-weight: bold;
-    color: #222223;
+    /* color: #222223; */
     font-family: Arial, Helvetica, sans-serif   ;
     
 }
