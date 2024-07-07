@@ -292,7 +292,7 @@ users.newUser("Test","Testing",'test@lala.com','123456');
 const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData)
 
-newPostsLoader(posts.storage,posts.selectedFilter);
+newPostsLoader(posts.storage);
 
 // posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
 // posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
@@ -444,6 +444,7 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 document.getElementById('newsletterForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const emailInput = document.getElementById('newsletterEmail').value;
+    document.getElementById('newsletterEmail').style.visibility = 'hidden';
     newsletterService.addNewSubscriber(emailInput);
 
     document.getElementById('newsletterForm').reset();
@@ -451,6 +452,7 @@ document.getElementById('newsletterForm').addEventListener('submit', function(ev
 document.getElementById('newsletterUnsubscribeForm').addEventListener('submit',(event)=>{
     event.preventDefault();
     const emailInput = document.getElementById('unsubNewsletterEmail').value;
+    document.getElementById('unsubNewsletterEmail').style.visibility = 'hidden';
     newsletterService.removeSubscriber(emailInput);
     document.getElementById('newsletterUnsubscribeForm').reset();
 })
@@ -480,13 +482,32 @@ function updateNavbar() {
 document.getElementById('newsletterBtn').addEventListener('click', function() {
     if (modalService.currentUser.email == null) {
         document.getElementById('subscibeModalInfo').innerText = '';
+        document.getElementById('showUnsubscribeText').style.visibility = 'visible';
+        document.getElementById('newsletterEmail').style.visibility = 'visible';
+        document.getElementById('newsletterEmail').disabled = false;
         showModal('subscribeModal');
     } 
+    else if(!modalService.currentUser.isSubscribed) {
+        document.getElementById('subscibeModalInfo').innerText = '';
+        document.getElementById('newsletterEmail').style.visibility = 'visible';
+        newsletterService.subscribeLoggedUser();
+        showModal('subscribeModal');
+    }
+    else if(modalService.currentUser.isSubscribed){
+        document.getElementById('unsubscibeModalInfo').innerText = '';
+        document.getElementById('unsubNewsletterEmail').style.visibility = 'visible';
+        newsletterService.unsubscribeLoggedUser();
+        showModal('unsubscribeModal');
+    }
 });
 document.getElementById('showUnsubscribeBtn').addEventListener('click', ()=>{
+    if (modalService.currentUser.email == null){
     hideModal('subscribeModal');
+    document.getElementById('unsubNewsletterEmail').disabled = false;
+    document.getElementById('unsubNewsletterEmail').style.visibility = 'visible';
     document.getElementById('unsubscibeModalInfo').innerHTML = "";
     showModal('unsubscribeModal');
+    }
 })
 
 //login event listener
@@ -535,3 +556,4 @@ window.addEventListener('click', function(event) {
 //updates the navbar
 updateNavbar();
 
+export{modalService};
