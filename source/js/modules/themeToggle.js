@@ -1,31 +1,6 @@
 console.log("CONNECTED");
-if(localStorage.getItem('mode') == 'dark'){
-    darkmode();
-    }
-    else{
-        lightMode()
-    }
-
-    function darkMode() {
-        localStorage.setItem("mode","dark");
-        document.documentElement.setAttribute("data-bs-theme", "dark"); //dark Theme 
-        document.getElementById("newsletterImg").setAttribute("src","./source/data/icons/envelopeWhite.svg");
-        document.getElementById("srcIcon").setAttribute("src","./source/data/icons/searchWhite.svg");
-        document.getElementById("filterIcon").setAttribute("src","./source/data/icons/filterWhite.svg");
-        document.getElementById("lightDarkToggle").setAttribute("src","./source/data/icons/moon.svg");
-        document.getElementById("loginBtn").setAttribute("class", "btn btn-light");
-        document.getElementById("dropdownMenuClickableInside").setAttribute("style", "color: white;");
-        document.querySelectorAll(".form-check-label").forEach(function(element) {
-            element.style.color = "white";
-        });
-        document.querySelectorAll('.card, .card-title').forEach(function(card) {
-            card.style.backgroundColor = 'lightblue'; 
-            card.style.color = "white";
-        });
-        document.getElementById("")
-    }
-    function lightMode() {
-        localStorage.setItem("mode","light");
+document.getElementById("lightDarkToggle").addEventListener("click", function(){ // ligth Theme 
+    if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
         document.documentElement.setAttribute("data-bs-theme", "light");
         document.getElementById("newsletterImg").setAttribute("src","./source/data/icons/envelope.svg");
         document.getElementById("srcIcon").setAttribute("src","./source/data/icons/search.svg");
@@ -40,12 +15,25 @@ if(localStorage.getItem('mode') == 'dark'){
             card.style.backgroundColor = '#f0efef'; 
             card.style.color = "black";
         });
-    }
-document.getElementById("lightDarkToggle").addEventListener("click", function(){ // ligth Theme 
-    lightMode();
-    if (localStorage.getItem('mode') == 'light') {
-        lightMode();
-    } else if(localStorage.getItem('mode') == 'dark') {
-        darkMode();
+
+
+
+    } else {
+        document.documentElement.setAttribute("data-bs-theme", "dark"); //dark Theme 
+        document.getElementById("newsletterImg").setAttribute("src","./source/data/icons/envelopeWhite.svg");
+        document.getElementById("srcIcon").setAttribute("src","./source/data/icons/searchWhite.svg");
+        document.getElementById("filterIcon").setAttribute("src","./source/data/icons/filterWhite.svg");
+        document.getElementById("lightDarkToggle").setAttribute("src","./source/data/icons/moon.svg");
+        document.getElementById("loginBtn").setAttribute("class", "btn btn-light");
+        document.getElementById("dropdownMenuClickableInside").setAttribute("style", "color: white;");
+        document.querySelectorAll(".form-check-label").forEach(function(element) {
+            element.style.color = "white";
+        });
+        document.querySelectorAll('.card, .card-title').forEach(function(card) {
+            card.style.backgroundColor = 'lightblue'; 
+            card.style.color = "white";
+        });
+
+        
     }
 })  
