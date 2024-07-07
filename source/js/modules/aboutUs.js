@@ -21,6 +21,7 @@ export function aboutUsPageLoader() {
             <li><h3>Daniel - Developer</h3></li>
             <li><h3>Boris - Developer</h3></li>
             <li><h3>Sasho - Developer</h3></li>
+            <li><h3>Petar - Developer</h3></li>
             <li><h3>Elena - QA engineer</h3></li>
             <li><h3>Marina - QA engineer</h3></li>
         </ul>
