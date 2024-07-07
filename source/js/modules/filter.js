@@ -51,6 +51,7 @@ export function searchPostsLoader(posts) {
     postService.renderPosts(filteredPosts);
 }
 export function authorPostsLoader(posts, id) {
+    console.log(postService.lastPageLoaded);
     postService.selectedFilter = "authorPosts";
     postsByAuthor = posts.filter(x => x.authorId == id);
     document.getElementById('contentPart').innerHTML = "";

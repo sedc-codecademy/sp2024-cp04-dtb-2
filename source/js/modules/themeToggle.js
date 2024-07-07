@@ -33,6 +33,7 @@ document.getElementById("lightDarkToggle").addEventListener("click", function(){
             card.style.backgroundColor = 'lightblue'; 
             card.style.color = "white";
         });
-        document.getElementById("")
+
+        
     }
 })  

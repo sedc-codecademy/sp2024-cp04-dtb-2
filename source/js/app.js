@@ -3,6 +3,7 @@ import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { Newsletter } from "./modules/newsletterService.js";
 import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor } from "./modules/filter.js";
+import { aboutUsPageLoader } from "./modules/aboutUs.js";   
 
 class ModalService {
     constructor(){
@@ -31,17 +32,75 @@ class PostService {
         this.searchBtn = document.getElementById('searchBtn');
         this.darkModeBtn = document.getElementById('darkModeBtn');
         this.result = document.getElementById('contentPart');
+        this.contentDiv = document.getElementById("contentPartDiv")
         this.loadingIndicator = document.getElementById('loadIndicator');
         this.loadMoreBtn = document.getElementById("loadMoreBtn");
         this.firstScrollReached = false;
         this.filterDiv = document.getElementById("filterDiv");
         this.backBtn = document.getElementById("backBtn");
-        
+
+
+        aboutBtn.addEventListener("click", function (){
+            aboutUsPageLoader();
+        });
         homeBtn.addEventListener('click',()=>{
-            newPostsLoader(posts.storage,posts.selectedFilter)
+            postService.loadMoreBtn.style.display = "block";
+            postService.filterDiv.style.display = "block";
+            postService.backBtn.style.display = "none";
+            this.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
+            newPostsLoader(posts.storage,posts.selectedFilter);
             this.loadMoreBtn.style.display = 'block';
 
         });
+        backBtn.addEventListener("click", function(){
+            // function hasDuplicates(array) {
+            //     // Sort the array
+            //     const sortedArray = array.slice().sort();
+            
+            //     // Check for duplicates by comparing adjacent elements
+            //     for (let i = 0; i < sortedArray.length - 1; i++) {
+            //         if (sortedArray[i] === sortedArray[i + 1]) {
+            //             return true; // Duplicate found
+            //         }
+            //     }
+            //     return false; // No duplicates found
+            // }
+            // if(hasDuplicates(postService.lastPageLoaded)) {
+            //     postService.lastPageLoaded.pop()
+            //     postService.lastPageLoaded.pop()
+            // } 
+            postService.lastPageLoaded.pop()
+
+
+            
+            postService.result.innerHTML = "";
+            if (postService.lastPageLoaded ==="about") {
+                
+                console.log("it is logged");
+                aboutUsPageLoader();
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "cards") { 
+                postService.loadMoreBtn.style.display = "block";
+                postService.filterDiv.style.display = "block";
+                postService.backBtn.style.display = "none";
+                postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
+                console.log("cards");
+                postService.renderPosts(postService.loadedPosts);
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "post") {
+                console.log(postService.lastPageLoaded)
+                console.log("post");
+                postService.openPost(postService.openedPostId);
+                console.log(postService.openedPostId)
+            } else if (postService.lastPageLoaded[postService.lastPageLoaded.length-1] === "author"){
+                console.log("author")
+                authorPostsLoader(posts.storage, postService.lastAuthor);;
+            } else {console.log("doesnt work")
+                postService.loadMoreBtn.style.display = "block";
+                postService.filterDiv.style.display = "block";
+                postService.backBtn.style.display = "none";
+                postService.renderPosts(postService.loadedPosts);
+            }
+        })
+
 
         window.addEventListener('scroll', function() {
             if(postService.selectedFilter == null){
@@ -91,6 +150,7 @@ class PostService {
             }
         });
   }
+        
         selectedFilter = "newPostLoader";
         initialPosts = 12;
         loadPosts = 12;
@@ -98,14 +158,19 @@ class PostService {
         idCounter = 0;
         loadedPosts = [];
         loadedSinglePost = null;
+        openedPostId = null;
         
 
         renderPosts = (posts) => {
+            if (this.selectedFilter !== "authorPosts"){
+                this.lastAuthor = null;
+                this.lastPageLoaded = ["cards"]; 
+            }
             let copies = [...posts];
             console.log(posts)
             console.log("second posts")
             this.counter = 0;
-         
+            
             for (let x of copies) {            
     
                 if (this.counter < this.initialPosts) {
@@ -150,10 +215,11 @@ class PostService {
         }
         renderSinglePost = (post) =>{
             window.scrollTo(0,0);
+            this.lastPageLoaded.push("post");
             this.loadMoreBtn.style.display = "none";
             this.filterDiv.style.display = "none";
             this.backBtn.style.display = "block";
-
+            console.log(postService.lastPageLoaded);
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
     <div class="row g-0">
       <div class="col-md-5">
@@ -215,6 +281,8 @@ class PostService {
     </div><hr><br>`
 
     document.getElementById("postAuthorId").addEventListener('click',()=>{
+        postService.lastPageLoaded.push("author");
+        postService.lastAuthor = this.loadedSinglePost.authorId
         authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
     });
 let testComment = document.getElementById("commentForm");
@@ -247,7 +315,9 @@ testComment.addEventListener("click", function (e) {
     }
 } 
 let getPostId = function(){
+        
         let postId = this.getAttribute("value");
+        postService.openedPostId = postId;
         postService.selectedFilter = null;
         postService.openPost(postId);
 }
