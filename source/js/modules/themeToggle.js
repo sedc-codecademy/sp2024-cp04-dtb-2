@@ -1,7 +1,7 @@
 console.log("CONNECTED");
 document.getElementById("lightDarkToggle").addEventListener("click", function(){ // ligth Theme 
     if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
-        document.documentElement.setAttribute("data-bs-theme", "light"); //dark Theme 
+        document.documentElement.setAttribute("data-bs-theme", "light"); 
         document.getElementById("newsletterImg").setAttribute("src","./source/data/icons/envelope.svg");
         document.getElementById("srcIcon").setAttribute("src","./source/data/icons/search.svg");
         document.getElementById("filterIcon").setAttribute("src","./source/data/icons/filter.svg");
