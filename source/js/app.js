@@ -726,14 +726,20 @@ document.getElementById("searchDiv").addEventListener("submit", function(event){
 document.getElementById("searchInput").addEventListener("input", function(event){
     event.preventDefault();
     let searchField = document.getElementById("searchInput").value;
-    if(searchField.length >= 3){
+    document.getElementById('suggestionWords').innerHTML = '';
+    if(searchField.length >= 2){
         searchSuggestions(searchField, titleWords);
     }
 })
 function searchSuggestions(searchQuery, suggestionWords) {
     let suggestions = suggestionWords.filter(x => x.includes(searchQuery.toLowerCase()));
     let firstFiveSuggestions = suggestions.splice(0, 4);
-    console.log(firstFiveSuggestions);
+    let optionList = document.getElementById('suggestionWords');
+    firstFiveSuggestions.forEach(element => {
+        optionList.innerHTML +=`
+            <option value="${element}">${element}</option>
+        `
+    });
 }
 
 
