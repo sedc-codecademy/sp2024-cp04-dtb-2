@@ -676,8 +676,8 @@ document.getElementById('newPostBtn').addEventListener('click',()=>{
     let postText = document.getElementById('newPostText').value ;
     let postTags = Array.from(document.querySelectorAll('.custom-control-input:checked')).map(cb => cb.value);
     let imageNumber = document.getElementById('imgRange').value ;
-    if(postTags.length == 0){
-        users.alert('warningAlert',"You must select at least 1 tag");
+    if(postTags.length == 0 || postText == '' || postTitle == ''){
+        users.alert('warningAlert',"You must fill the fields and select 1 tag");
 
     }
     else{
