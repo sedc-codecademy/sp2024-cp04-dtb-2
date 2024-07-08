@@ -12,10 +12,11 @@
 </head>
 
 <body>
+    <div class="alert alert-fixed alert-success" role="alert" id="successAlert"></div>    
+        <div class="alert alert-fixed alert-warning" role="alert" id="warningAlert"></div>    
     <header>
-        <div class="alert alert-success" role="alert" id="successAlert"></div>    
-        <div class="alert alert-warning" role="alert" id="warningAlert"></div>    
-        <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+        
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
@@ -27,11 +28,11 @@
                         <img src="./source/data/logoImg/logo.png" width="65px" height="50px" id="logoImg">
                         <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row">
                             <li class="nav-item">
-                                <div id="searchDiv">
-                                    <input type="search" id="searchInput" placeholder="Search">
+                                <form id="searchDiv">
+                                    <input type="search" id="searchInput" placeholder="Search" required>
                                     <button class="btn" type="submit"><img src="./source/data/icons/search.svg" id="srcIcon" alt="Search Icon"
                                             style="width: 20px; height: 20px;"></button>
-                                </div>
+                                    </form>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" id="homeBtn">Home</a>
@@ -236,16 +237,16 @@
             <form id="signUpForm" action="" method=post
             oninput='signUpPasswordCheck.setCustomValidity(signUpPassword.value != signUpPasswordCheck.value ? "Passwords do not match." : "")'>
                 <div class="form-group">
-                    <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" required>
+                    <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" pattern="([A-Za-z]).{3,15}" title="No numbers and special chars allowed (4-15 character limit)" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="signUpLastName" placeholder="Last Name" name="signUpLastName" required>
+                    <input type="text" id="signUpLastName" placeholder="Last Name" name="signUpLastName" pattern="([A-Za-z]).{3,15}" title="No numbers and special chars allowed (4-15 character limit)" required>
                 </div>
                 <div class="form-group">
                     <input type="email" id="signUpEmail" placeholder="E-mail" name="signUpEmail" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="signUpPassword" placeholder="Password" name="signUpPassword" required>
+                    <input type="password" id="signUpPassword" placeholder="Password" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 5 or more characters" required>
                 </div>
                 <div class="form-group">
                     <input type="password" id="signUpPasswordCheck" placeholder="Confirm password" name="signUpPasswordCheck" required>

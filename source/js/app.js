@@ -324,11 +324,13 @@ class PostService {
     document.getElementById("commentForm").addEventListener("submit",function(event){
         event.preventDefault();
         console.log("it kinda works")
-        let commentName = document.getElementById("commentName").value;
-        let commentText = document.getElementById("commentText").value;
+        let commentName = document.getElementById("commentName");
+        let commentText = document.getElementById("commentText");
         let post = posts.storage.find(x=> x.id == postService.commentPostId);
         let indexPost = posts.storage.indexOf(post);
-        posts.storage[indexPost].addComment(commentName,commentText);
+        posts.storage[indexPost].addComment(commentName.value,commentText.value);
+        commentName.value = "";
+        commentText.value = "";
         displayComments();
     });
     displayComments();
@@ -444,7 +446,7 @@ document.getElementById("srcIcon").addEventListener("click", function() {
     //     // document.getElementById("searchInput").setAttribute("style",dis)
     //     console.log("The thing works")
     // }
-    searchPostsLoader(posts.storage);
+    // searchPostsLoader(posts.storage);
 });
 
 
@@ -525,15 +527,20 @@ document.getElementById('signUpForm').addEventListener('submit', function(event)
     let registeredEmail = document.getElementById('signUpEmail').value;
     let registeredPassword = document.getElementById('signUpPassword').value;
     console.log(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-    if(!users.storage.some(x => x.email === registeredEmail)){
-        console.log('User Signed Up:', { registeredEmail, registeredPassword });
-        users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-        users.alert('successAlert',"Successfully registered!");
-        document.getElementById('signUpForm').reset();
-        hideModal('signUpModal');
+    if(!registeredPassword.length < 5){
+        if(!users.storage.some(x => x.email === registeredEmail)){
+            console.log('User Signed Up:', { registeredEmail, registeredPassword });
+            users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
+            users.alert('successAlert',"Successfully registered!");
+            document.getElementById('signUpForm').reset();
+            hideModal('signUpModal');
+        } else{
+            users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
+            document.getElementById('signUpForm').reset();
+        }
     } else{
-        users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
-        document.getElementById('signUpForm').reset();
+        users.alert('warningAlert',"Password does not meet the requirements");
+            document.getElementById('signUpForm').reset();
     }
 });
 
@@ -707,6 +714,11 @@ document.getElementById("monthModalForm").addEventListener("submit", function(ev
     let dateValue = document.getElementById("dateValue").value;
     monthYear(posts.storage, dateValue);
 });
+// document.getElementById("searchInput").addEventListener("")
+document.getElementById("searchDiv").addEventListener("submit", function(event){
+    event.preventDefault();
+    searchPostsLoader(posts.storage);
+})
 
 
 function displayComments() {
