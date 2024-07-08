@@ -527,15 +527,20 @@ document.getElementById('signUpForm').addEventListener('submit', function(event)
     let registeredEmail = document.getElementById('signUpEmail').value;
     let registeredPassword = document.getElementById('signUpPassword').value;
     console.log(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-    if(!users.storage.some(x => x.email === registeredEmail)){
-        console.log('User Signed Up:', { registeredEmail, registeredPassword });
-        users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-        users.alert('successAlert',"Successfully registered!");
-        document.getElementById('signUpForm').reset();
-        hideModal('signUpModal');
+    if(!registeredPassword.length < 5){
+        if(!users.storage.some(x => x.email === registeredEmail)){
+            console.log('User Signed Up:', { registeredEmail, registeredPassword });
+            users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
+            users.alert('successAlert',"Successfully registered!");
+            document.getElementById('signUpForm').reset();
+            hideModal('signUpModal');
+        } else{
+            users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
+            document.getElementById('signUpForm').reset();
+        }
     } else{
-        users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
-        document.getElementById('signUpForm').reset();
+        users.alert('warningAlert',"Password does not meet the requirements");
+            document.getElementById('signUpForm').reset();
     }
 });
 
