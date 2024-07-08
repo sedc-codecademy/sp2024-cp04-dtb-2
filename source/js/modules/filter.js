@@ -49,7 +49,14 @@ export function searchPostsLoader(posts) {
     filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchInput) || post.text.toLowerCase().includes(searchInput));
     document.getElementById("searchInput").value = '';
     document.getElementById("contentPart").innerHTML = "";
-    postService.renderPosts(filteredPosts);
+    if(filteredPosts.length < 1){
+        document.getElementById('contentPart').innerHTML = `
+        <h5 style="width: 30vw; text-align:center">No posts were found with the search query -> ( <b>${searchInput}</b> ).<br>Please try searching something else!</h5>`;
+        document.getElementById('loadMoreBtn').style.display = 'none';
+
+    } else{
+        postService.renderPosts(filteredPosts);
+    }
 }
 export function authorPostsLoader(posts, id) {
     postService.selectedFilter = "authorPosts";
