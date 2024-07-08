@@ -1,9 +1,9 @@
 import { Comment } from "./comment.js";
 
 import { Base } from "./base.js"
-import { postService } from "../app.js";
+import { users } from "../app.js";
 export class Post extends Base{
-    constructor(id, imgSrc, title, text, tags, authorId, stars, postingTime = new Date().toISOString().slice(0, 10)){
+    constructor(id, imgSrc, title, text, tags, authorId, stars = [], postingTime = new Date().toISOString().slice(0, 10)){
         super(id);
         this.imgSrc = imgSrc;
         this.title = title;
@@ -25,7 +25,23 @@ export class Post extends Base{
     // }
 
 
-    addStar = (userId) => !this.stars.some(x => x.userId = userId) ? this.stars.Push(userId)
-                                                                   : `This post already has a star from user with id ${userId}.`;
-
+    addStar = (userId) =>{
+        let starArray = this.stars.some(x => x == userId);
+        if(!starArray){
+            this.stars.push(userId);
+            document.getElementById('starPostImg').setAttribute('src',"./source/data/icons/star-fill.svg");
+            users.alert('successAlert',"Successfully liked the post!")
+        }
+        else {
+            users.alert('warningAlert',"You've already liked the post!")
+        };
+    }
+    fillStar = (userId) =>{
+        if(this.stars.some(x => x == userId)){
+            document.getElementById('starPostImg').setAttribute('src',"./source/data/icons/star-fill.svg");
+        }
+        else{
+            document.getElementById('starPostImg').setAttribute('src',"./source/data/icons/star.svg");
+        }
+    } 
 }

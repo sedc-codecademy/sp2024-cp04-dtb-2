@@ -259,6 +259,15 @@ a:hover {
     text-align: center;
     color: green;
 }
+#addStarContainer{
+    position: relative;
+    margin-top: 10vh;
+    bottom: 5px;
+}
+#addStartOnPost:hover{
+    cursor: pointer;
+    color: rgb(6, 138, 39);
+}
 #logoImg:hover{
     cursor: pointer;
 }

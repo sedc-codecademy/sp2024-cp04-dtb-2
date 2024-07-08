@@ -1,4 +1,5 @@
 import { Posts } from "./modules/posts.js";
+import { Post } from "./modules/post.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { Newsletter } from "./modules/newsletterService.js";
@@ -50,6 +51,8 @@ class PostService {
         logoImg.addEventListener('click',()=>{
             newPostsLoader(posts.storage);
             this.loadMoreBtn.style.display = 'block';
+            this.filterDiv.style.display = "block";
+            this.backBtn.style.display = "none";
             lightDarkChek();
         });
         homeBtn.addEventListener('click',()=>{
@@ -181,6 +184,7 @@ class PostService {
         loadedSinglePost = null;
         openedPostId = [];
         commentPostId = null;
+        indexOfPost = null;
 
         renderPosts = (posts) => {
             postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
@@ -255,15 +259,23 @@ class PostService {
       <div class="col-md-7">
         <div class="singleCard-body">
           <h2 class="card-title card-header"> ${post.title}</h2>
-          <small>Created by - <a style="color: blue"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
+          <small>Created by - <a style="color: #00b13d"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
           <small>tags- ${post.tags}</small>
           <hr>
           <p class="singleCard-text">${post.text}</p>
           <div class="card" style="width: 70vw;">
         </div>
+        <br>
+      <div id='addStarContainer'>
+            <p>Did you like this post? 
+            <span  id='addStartOnPost'> Add -> <img id='starPostImg' src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon"></span>
+            </p>
+    </div>
       </div>
+      
     </div>
   </div>
+    
   <br>
   <br>
   <hr>
@@ -281,7 +293,7 @@ class PostService {
             <form id="commentForm">
                 <input type= "text" id = "commentName" placeholder="Name (optional)">
                 <label for="commentText">Your Comment:</label>
-                <textarea type="text" id="commentText" name="commentText" placeholder="Type your comment here..."></textarea>
+                <textarea type="text" id="commentText" name="commentText" placeholder="Type your comment here..." required></textarea>
                 <button type="submit">Post Comment</button>
             </form>
         </div>
@@ -298,6 +310,17 @@ class PostService {
     // document.getElementById("comments").innerHTML = `
     // it works
     // `
+    document.getElementById('addStartOnPost').addEventListener('click',()=>{
+        if(modalService.currentUser.email == null){
+            users.alert('warningAlert', 'You must be logged in to like a post!');
+        }
+        else{
+            let post = posts.storage.find(x=> x.id == postService.commentPostId);
+            let indexPost = posts.storage.indexOf(post);
+            posts.storage[indexPost].addStar(modalService.currentUser.id);
+        }
+    })
+    posts.storage[this.indexOfPost].fillStar(modalService.currentUser.id);
     document.getElementById("commentForm").addEventListener("submit",function(event){
         event.preventDefault();
         console.log("it kinda works")
@@ -309,7 +332,6 @@ class PostService {
         displayComments();
     });
     displayComments();
-
     document.getElementById("postAuthorId").addEventListener('click',()=>{
         postService.lastPageLoaded.push("author");
         postService.lastAuthor = this.loadedSinglePost.authorId;
@@ -326,7 +348,7 @@ class PostService {
 //     console.log("Comment:", commentText);
 //     console.log("Anonymous:", isAnonymous);
 // });
-lightDarkChek();        
+// lightDarkChek();        
 }
 
         loadMore = (posts) => {
@@ -342,6 +364,7 @@ lightDarkChek();
     openPost (postId){
         let post = posts.storage.find(x=> x.id == postId);
         this.loadedSinglePost = post;
+        this.indexOfPost = posts.storage.indexOf(post);
         this.renderSinglePost(post);
     }
 } 
@@ -376,6 +399,7 @@ loadMoreBtn.addEventListener("click", function () {
 
 const users = new Users();
 const posts = new Posts();
+const post = new Post();
 const postService = new PostService();
 const modalService = new ModalService();
 const newsletterService = new Newsletter();
@@ -472,7 +496,7 @@ function scrollFunction() {
 }
 
 console.log(postData);
-export {postService};
+export {postService,users};
 
 
 
@@ -641,7 +665,7 @@ document.getElementById('newPostBtn').addEventListener('click',()=>{
     let postText = document.getElementById('newPostText').value ;
     let postTags = Array.from(document.querySelectorAll('.custom-control-input:checked')).map(cb => cb.value);
     let imageNumber = document.getElementById('imgRange').value ;
-    posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1],[users.storage[modalService.currentUser.id - 1]]);
+    posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1]);
     hideModal('createPostModal');
     newPostsLoader(posts.storage);
 
@@ -672,7 +696,7 @@ updateNavbar();
 // displayComments();
 
 
-export{modalService};
+export{modalService,hideModal};
 
 
 document.getElementById("monthFilter").addEventListener("click",function(){

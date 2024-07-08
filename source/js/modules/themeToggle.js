@@ -80,6 +80,7 @@ export function lightDarkChek() {
     document.getElementById("lightDarkToggle").setAttribute("src","./source/data/icons/brightness-high-fill.svg");
     document.getElementById("loginBtn").setAttribute("class", "btn btn-dark");
     document.getElementById("dropdownMenuClickableInside").setAttribute("style", "color: black;");
+    document.getElementById('backBtn').innerHTML = `<img src='./source/data/icons/arrow-left.svg'>`
     document.querySelectorAll(".starsIcon").forEach(function(element){
         element.setAttribute("src","./source/data/icons/star.svg");
     });
@@ -104,6 +105,7 @@ export function lightDarkChek() {
         document.getElementById("lightDarkToggle").setAttribute("src","./source/data/icons/moon.svg");
         document.getElementById("loginBtn").setAttribute("class", "btn btn-light");
         document.getElementById("dropdownMenuClickableInside").setAttribute("style", "color: white;");
+        document.getElementById('backBtn').innerHTML = `<img src='./source/data/icons/arrow-left-dark.svg'>`
         document.querySelectorAll(".starsIcon").forEach(function(element){
             element.setAttribute("src","./source/data/icons/starWhite.svg");
         });
