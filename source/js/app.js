@@ -1,4 +1,5 @@
 import { Posts } from "./modules/posts.js";
+import { Post } from "./modules/post.js";
 import { Users } from "./modules/users.js";
 import { getDataFromJson } from "./modules/dataService.js";
 import { Newsletter } from "./modules/newsletterService.js";
@@ -50,6 +51,8 @@ class PostService {
         logoImg.addEventListener('click',()=>{
             newPostsLoader(posts.storage);
             this.loadMoreBtn.style.display = 'block';
+            this.filterDiv.style.display = "block";
+            this.backBtn.style.display = "none";
             lightDarkChek();
         });
         homeBtn.addEventListener('click',()=>{
@@ -181,6 +184,7 @@ class PostService {
         loadedSinglePost = null;
         openedPostId = [];
         commentPostId = null;
+        indexOfPost = null;
 
         renderPosts = (posts) => {
             postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
@@ -207,16 +211,18 @@ class PostService {
                             <div class="card-body icons">
                                 <div> 
                                     <img src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon">
-                                    <p>${x.stars.length}Stars</p>
+                                    <p>${x.stars.length} Stars</p>
                                 </div>
                                 <div>
                                     <img src="./source/data/icons/chat-right.svg" alt="Comment Icon" class="commentsIcon">
-                                    <p>Comments</p>
+                                    <p>${x.comments.length} Comments</p>
                                 </div>
-                            </div>
-                            <div class="tags">
-                                <p>Tags: ${x.tags}</p>
+                                <br>
+                                <div class="tags">
+                                <p><small>Tags: ${x.tags}</small></p>
                             </div>  
+                            </div>
+                            
                         </div>
                     `;
     
@@ -253,15 +259,23 @@ class PostService {
       <div class="col-md-7">
         <div class="singleCard-body">
           <h2 class="card-title card-header"> ${post.title}</h2>
-          <small>Created by - <a style="color: blue"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
+          <small>Created by - <a style="color: #00b13d"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
           <small>tags- ${post.tags}</small>
           <hr>
           <p class="singleCard-text">${post.text}</p>
           <div class="card" style="width: 70vw;">
         </div>
+        <br>
+      <div id='addStarContainer'>
+            <p>Did you like this post? 
+            <span  id='addStartOnPost'> Add -> <img id='starPostImg' src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon"></span>
+            </p>
+    </div>
       </div>
+      
     </div>
   </div>
+    
   <br>
   <br>
   <hr>
@@ -279,7 +293,7 @@ class PostService {
             <form id="commentForm">
                 <input type= "text" id = "commentName" placeholder="Name (optional)">
                 <label for="commentText">Your Comment:</label>
-                <textarea type="text" id="commentText" name="commentText" placeholder="Type your comment here..."></textarea>
+                <textarea type="text" id="commentText" name="commentText" placeholder="Type your comment here..." required></textarea>
                 <button type="submit">Post Comment</button>
             </form>
         </div>
@@ -296,17 +310,30 @@ class PostService {
     // document.getElementById("comments").innerHTML = `
     // it works
     // `
+    document.getElementById('addStartOnPost').addEventListener('click',()=>{
+        if(modalService.currentUser.email == null){
+            users.alert('warningAlert', 'You must be logged in to like a post!');
+        }
+        else{
+            let post = posts.storage.find(x=> x.id == postService.commentPostId);
+            let indexPost = posts.storage.indexOf(post);
+            posts.storage[indexPost].addStar(modalService.currentUser.id);
+        }
+    })
+    posts.storage[this.indexOfPost].fillStar(modalService.currentUser.id);
     document.getElementById("commentForm").addEventListener("submit",function(event){
         event.preventDefault();
         console.log("it kinda works")
-        let commentName = document.getElementById("commentName").value;
-        let commentText = document.getElementById("commentText").value;
+        let commentName = document.getElementById("commentName");
+        let commentText = document.getElementById("commentText");
         let post = posts.storage.find(x=> x.id == postService.commentPostId);
         let indexPost = posts.storage.indexOf(post);
-        posts.storage[indexPost].addComment(commentName,commentText);
+        posts.storage[indexPost].addComment(commentName.value,commentText.value);
+        commentName.value = "";
+        commentText.value = "";
         displayComments();
     });
-
+    displayComments();
     document.getElementById("postAuthorId").addEventListener('click',()=>{
         postService.lastPageLoaded.push("author");
         postService.lastAuthor = this.loadedSinglePost.authorId;
@@ -323,7 +350,7 @@ class PostService {
 //     console.log("Comment:", commentText);
 //     console.log("Anonymous:", isAnonymous);
 // });
-lightDarkChek();        
+// lightDarkChek();        
 }
 
         loadMore = (posts) => {
@@ -339,6 +366,7 @@ lightDarkChek();
     openPost (postId){
         let post = posts.storage.find(x=> x.id == postId);
         this.loadedSinglePost = post;
+        this.indexOfPost = posts.storage.indexOf(post);
         this.renderSinglePost(post);
     }
 } 
@@ -373,6 +401,7 @@ loadMoreBtn.addEventListener("click", function () {
 
 const users = new Users();
 const posts = new Posts();
+const post = new Post();
 const postService = new PostService();
 const modalService = new ModalService();
 const newsletterService = new Newsletter();
@@ -417,7 +446,7 @@ document.getElementById("srcIcon").addEventListener("click", function() {
     //     // document.getElementById("searchInput").setAttribute("style",dis)
     //     console.log("The thing works")
     // }
-    searchPostsLoader(posts.storage);
+    // searchPostsLoader(posts.storage);
 });
 
 
@@ -469,7 +498,7 @@ function scrollFunction() {
 }
 
 console.log(postData);
-export {postService};
+export {postService,users};
 
 
 
@@ -498,15 +527,20 @@ document.getElementById('signUpForm').addEventListener('submit', function(event)
     let registeredEmail = document.getElementById('signUpEmail').value;
     let registeredPassword = document.getElementById('signUpPassword').value;
     console.log(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-    if(!users.storage.some(x => x.email === registeredEmail)){
-        console.log('User Signed Up:', { registeredEmail, registeredPassword });
-        users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
-        users.alert('successAlert',"Successfully registered!");
-        document.getElementById('signUpForm').reset();
-        hideModal('signUpModal');
+    if(!registeredPassword.length < 5){
+        if(!users.storage.some(x => x.email === registeredEmail)){
+            console.log('User Signed Up:', { registeredEmail, registeredPassword });
+            users.newUser(registeredFirstname, registeredLastName, registeredEmail, registeredPassword);
+            users.alert('successAlert',"Successfully registered!");
+            document.getElementById('signUpForm').reset();
+            hideModal('signUpModal');
+        } else{
+            users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
+            document.getElementById('signUpForm').reset();
+        }
     } else{
-        users.alert('warningAlert',"Email is already registered, please try logging in or use a different email!");
-        document.getElementById('signUpForm').reset();
+        users.alert('warningAlert',"Password does not meet the requirements");
+            document.getElementById('signUpForm').reset();
     }
 });
 
@@ -543,19 +577,29 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 //displayes the currently subscribed email in the unsubscribe modal
 document.getElementById('newsletterForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    if(!modalService.currentUser.isSubscribed  && modalService.currentUser.email != null ){
+        modalService.currentUser.isSubscribed = true;
+        newsletterService.addNewSubscriber(modalService.currentUser.email);
+    }
+    else{
     const emailInput = document.getElementById('newsletterEmail').value;
     document.getElementById('newsletterEmail').style.visibility = 'hidden';
     newsletterService.addNewSubscriber(emailInput);
 
     document.getElementById('newsletterForm').reset();
-});
+}});
 document.getElementById('newsletterUnsubscribeForm').addEventListener('submit',(event)=>{
     event.preventDefault();
+    if(modalService.currentUser.isSubscribed && modalService.currentUser.email != null ){
+        modalService.currentUser.isSubscribed = false;
+        newsletterService.removeSubscriber(modalService.currentUser.email);
+    }
+    else{
     const emailInput = document.getElementById('unsubNewsletterEmail').value;
     document.getElementById('unsubNewsletterEmail').style.visibility = 'hidden';
     newsletterService.removeSubscriber(emailInput);
     document.getElementById('newsletterUnsubscribeForm').reset();
-})
+}})
 
 
 //changes the button from login to logout and displays the currently loggin user
@@ -628,7 +672,7 @@ document.getElementById('newPostBtn').addEventListener('click',()=>{
     let postText = document.getElementById('newPostText').value ;
     let postTags = Array.from(document.querySelectorAll('.custom-control-input:checked')).map(cb => cb.value);
     let imageNumber = document.getElementById('imgRange').value ;
-    posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1],[users.storage[modalService.currentUser.id - 1]]);
+    posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1]);
     hideModal('createPostModal');
     newPostsLoader(posts.storage);
 
@@ -659,7 +703,7 @@ updateNavbar();
 // displayComments();
 
 
-export{modalService};
+export{modalService,hideModal};
 
 
 document.getElementById("monthFilter").addEventListener("click",function(){
@@ -670,11 +714,22 @@ document.getElementById("monthModalForm").addEventListener("submit", function(ev
     let dateValue = document.getElementById("dateValue").value;
     monthYear(posts.storage, dateValue);
 });
+// document.getElementById("searchInput").addEventListener("")
+document.getElementById("searchDiv").addEventListener("submit", function(event){
+    event.preventDefault();
+    searchPostsLoader(posts.storage);
+})
 
 
 function displayComments() {
     document.getElementById("addedComments").innerHTML = ""
     let post = posts.storage.find(x=> x.id == postService.commentPostId);
+    if(post.comments.length == 0){
+        document.getElementById("addedComments").innerHTML = `
+        <div class="comment" style="text-align: center">
+        <p>Be the first to comment!</p>
+        </div>`
+    }
     for (let x of post.comments){
         document.getElementById("addedComments").innerHTML += `
         <div class="comment">

@@ -12,3 +12,6 @@
     </div>
   </div>
 </div>
+
+
+add to navbar class = "fixed-top"  - for improvement

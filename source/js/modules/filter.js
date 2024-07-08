@@ -1,4 +1,4 @@
-import {postService} from "../app.js";
+import {postService,users,hideModal} from "../app.js";
 
 export let taggedPosts = [];
 export let mostPopularPosts = [];
@@ -47,6 +47,7 @@ export function searchPostsLoader(posts) {
     postService.selectedFilter = "searchedPosts";
     let searchInput = document.getElementById("searchInput").value.toLowerCase();
     filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchInput) || post.text.toLowerCase().includes(searchInput));
+    document.getElementById("searchInput").value = '';
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(filteredPosts);
 }
@@ -69,8 +70,16 @@ export function monthYear(posts, dateValue) {
 
     // Filter posts based on the dateValue
     let monthYearPosts = splicedPosts.filter(post => post.postingTime === dateValue);
+    if(monthYearPosts.length < 1){
+        document.getElementById('contentPart').innerHTML = `
+        <h5 style="width: 30vw; text-align:center">NO POSTS FOUND ON ${dateValue}!</h5>`;
+        users.alert("warningAlert", `There are no posts found on ${dateValue}. Please filter by another date!`);
+        document.getElementById('loadMoreBtn').style.display = 'none';
 
-    // Render the filtered posts
+    }
+    else{// Render the filtered posts
+    hideModal('monthModal');
     document.getElementById('contentPart').innerHTML = "";
     postService.renderPosts(monthYearPosts);
+    }
 }
