@@ -41,6 +41,7 @@ class PostService {
         this.backBtn = document.getElementById("backBtn");
         this.logoImg = document.getElementById('logoImg');
         this.isDarkTheme = false;
+        // this.
         
 
 
@@ -185,6 +186,8 @@ class PostService {
         openedPostId = [];
         commentPostId = null;
         indexOfPost = null;
+
+        
 
         renderPosts = (posts) => {
             postService.result.setAttribute("style","max-width: min-content; max height: min-content; display: grid");
@@ -419,6 +422,7 @@ users.newUser("Test","Testing",'test@lala.com','123456');
 
 const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData)
+let titleWords = getTitleWords(posts.storage);
 
 newPostsLoader(posts.storage);
 
@@ -719,6 +723,18 @@ document.getElementById("searchDiv").addEventListener("submit", function(event){
     event.preventDefault();
     searchPostsLoader(posts.storage);
 })
+document.getElementById("searchInput").addEventListener("input", function(event){
+    event.preventDefault();
+    let searchField = document.getElementById("searchInput").value;
+    if(searchField.length >= 3){
+        searchSuggestions(searchField, titleWords);
+    }
+})
+function searchSuggestions(searchQuery, suggestionWords) {
+    let suggestions = suggestionWords.filter(x => x.includes(searchQuery.toLowerCase()));
+    let firstFiveSuggestions = suggestions.splice(0, 4);
+    console.log(firstFiveSuggestions);
+}
 
 
 function displayComments() {
@@ -740,4 +756,18 @@ function displayComments() {
     `
     }
     
+}
+function getTitleWords(posts){
+    let result = [];
+
+    posts.forEach(x => {
+        let words = x.title.split(' ');
+        for(let i = 0; i < words.length; i++){
+            if (!result.includes(words[i].toLowerCase())){
+                result.push(words[i].toLowerCase());
+            }
+        }
+
+    })
+    return result;
 }
