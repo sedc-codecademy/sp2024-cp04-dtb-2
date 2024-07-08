@@ -446,7 +446,7 @@ document.getElementById("srcIcon").addEventListener("click", function() {
     //     // document.getElementById("searchInput").setAttribute("style",dis)
     //     console.log("The thing works")
     // }
-    searchPostsLoader(posts.storage);
+    // searchPostsLoader(posts.storage);
 });
 
 
@@ -709,6 +709,11 @@ document.getElementById("monthModalForm").addEventListener("submit", function(ev
     let dateValue = document.getElementById("dateValue").value;
     monthYear(posts.storage, dateValue);
 });
+// document.getElementById("searchInput").addEventListener("")
+document.getElementById("searchDiv").addEventListener("submit", function(event){
+    event.preventDefault();
+    searchPostsLoader(posts.storage);
+})
 
 
 function displayComments() {

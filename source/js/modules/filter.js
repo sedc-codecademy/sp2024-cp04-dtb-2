@@ -47,6 +47,7 @@ export function searchPostsLoader(posts) {
     postService.selectedFilter = "searchedPosts";
     let searchInput = document.getElementById("searchInput").value.toLowerCase();
     filteredPosts = posts.filter(post => post.title.toLowerCase().includes(searchInput) || post.text.toLowerCase().includes(searchInput));
+    document.getElementById("searchInput").value = '';
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(filteredPosts);
 }
