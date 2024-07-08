@@ -33,7 +33,10 @@ export class Post extends Base{
             users.alert('successAlert',"Successfully liked the post!")
         }
         else {
-            users.alert('warningAlert',"You've already liked the post!")
+            let index = this.stars.indexOf(userId);
+            this.stars.splice(index, 1);
+            document.getElementById('starPostImg').setAttribute('src',"./source/data/icons/star.svg");
+            users.alert('successAlert',"Successfully unliked the post!");
         };
     }
     fillStar = (userId) =>{
