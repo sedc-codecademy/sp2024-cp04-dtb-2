@@ -676,10 +676,15 @@ document.getElementById('newPostBtn').addEventListener('click',()=>{
     let postText = document.getElementById('newPostText').value ;
     let postTags = Array.from(document.querySelectorAll('.custom-control-input:checked')).map(cb => cb.value);
     let imageNumber = document.getElementById('imgRange').value ;
+    if(postTags.length == 0){
+        users.alert('warningAlert',"You must select at least 1 tag");
+
+    }
+    else{
     posts.newPost(`source/data/postImgs/${imageNumber}.jpg`, postTitle, postText, postTags, users.storage[modalService.currentUser.id - 1]);
     hideModal('createPostModal');
     newPostsLoader(posts.storage);
-
+    }
 })
 
 
