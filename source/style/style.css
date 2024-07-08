@@ -429,3 +429,9 @@ a:hover {
     display: flex;
     justify-content: center;
   }
+
+  body::before {
+    display:block;
+    content: '';
+    height:50px; /* or whatever */
+    }
