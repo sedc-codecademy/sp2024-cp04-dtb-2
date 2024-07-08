@@ -201,13 +201,21 @@ a:hover {
      text-align: center;
 }
 .alert {
-    width: 40vw;
-    position: absolute;
-    margin-left: 30vw;
+    /* width: 40vw; */
+    /* position: absolute;
+    margin-left: 30vw; */
     z-index: 2;
     text-align: center;
     display: none;
 }
+.alert-fixed {
+    position:fixed;
+    top: 0px;
+    left: 30vw;
+    width: 40vw;
+    z-index:9999;
+    border-radius: 20px;
+    }
 
 #backToTopBtn {
     display: none; /* Hidden by default */
@@ -429,3 +437,5 @@ a:hover {
     display: flex;
     justify-content: center;
   }
+
+  

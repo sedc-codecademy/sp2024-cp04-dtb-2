@@ -324,11 +324,13 @@ class PostService {
     document.getElementById("commentForm").addEventListener("submit",function(event){
         event.preventDefault();
         console.log("it kinda works")
-        let commentName = document.getElementById("commentName").value;
-        let commentText = document.getElementById("commentText").value;
+        let commentName = document.getElementById("commentName");
+        let commentText = document.getElementById("commentText");
         let post = posts.storage.find(x=> x.id == postService.commentPostId);
         let indexPost = posts.storage.indexOf(post);
-        posts.storage[indexPost].addComment(commentName,commentText);
+        posts.storage[indexPost].addComment(commentName.value,commentText.value);
+        commentName.value = "";
+        commentText.value = "";
         displayComments();
     });
     displayComments();
