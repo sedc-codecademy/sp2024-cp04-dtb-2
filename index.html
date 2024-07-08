@@ -237,10 +237,10 @@
             <form id="signUpForm" action="" method=post
             oninput='signUpPasswordCheck.setCustomValidity(signUpPassword.value != signUpPasswordCheck.value ? "Passwords do not match." : "")'>
                 <div class="form-group">
-                    <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" required>
+                    <input type="text" id="signUpFirstName" placeholder="First Name" name="signUpFirstName" pattern="([A-Za-z]).{3,15}" title="No numbers and special chars allowed (4-15 character limit)" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="signUpLastName" placeholder="Last Name" name="signUpLastName" required>
+                    <input type="text" id="signUpLastName" placeholder="Last Name" name="signUpLastName" pattern="([A-Za-z]).{3,15}" title="No numbers and special chars allowed (4-15 character limit)" required>
                 </div>
                 <div class="form-group">
                     <input type="email" id="signUpEmail" placeholder="E-mail" name="signUpEmail" required>
