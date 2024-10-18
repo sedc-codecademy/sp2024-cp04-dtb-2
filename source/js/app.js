@@ -6,7 +6,7 @@ import { Newsletter } from "./modules/newsletterService.js";
 import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, taggedPosts, mostPopularPosts, oldPosts, newestPosts, searchPostsLoader, filteredPosts, authorPostsLoader, postsByAuthor, monthYear } from "./modules/filter.js";
 import { aboutUsPageLoader } from "./modules/aboutUs.js";   
 import { lightDarkChek } from "./modules/themeToggle.js";
-
+import {apiCall} from "./modules/apiCall.js";
 class ModalService {
     constructor(){
         this.currentUser = this.removeSession();
@@ -782,3 +782,8 @@ function getTitleWords(posts){
     })
     return result;
 }
+
+let apiCallz = new apiCall();
+
+apiCallz.fetchPaginatedPosts();
+apiCallz.fetchDetailedPost();
