@@ -7,6 +7,11 @@ import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, t
 import { aboutUsPageLoader } from "./modules/aboutUs.js";   
 import { lightDarkChek } from "./modules/themeToggle.js";
 import {apiCall} from "./modules/apiCall.js";
+
+
+let apiCallz = new apiCall();
+
+
 class ModalService {
     constructor(){
         this.currentUser = this.removeSession();
@@ -195,30 +200,33 @@ class PostService {
                 this.lastAuthor = null;
                 this.lastPageLoaded = ["cards"]; 
             }
-            let copies = [...posts];
+           // let copies = [...posts];
+           let copies = [];
+           copies = posts;
             console.log(posts)
+            console.log(copies);
             console.log("second posts")
             this.counter = 0;
          
-            for (let x of copies) {            
-    
+            for (let x of copies.posts) {            
+                const imageSrc = `data:image/png;base64,${x.image}`; 
                 if (this.counter < this.initialPosts) {
                          
                     this.result.innerHTML += `
                         <div class="card" style="width: 25vw" id="card-${x.id}">
-                            <img class="card-img-top img-fluid imgLink" src="${x.imgSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here" value="${x.id}">
+                            <img class="card-img-top img-fluid imgLink" src="${imageSrc}" style="object-fit: fill; height: 20vw;" alt="Image should be here" value="${x.id}">
                             <div class="card-body title">
                                 <a class="post-link"  value="${x.id}"><h5 class="card-title">${x.title}</h5></a>
-                                <p class="card-text">Do you want to read more?</p>
+                                <p class="card-text">${x.description}</p>
                             </div>
                             <div class="card-body icons">
                                 <div> 
                                     <img src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon">
-                                    <p>${x.stars.length} Stars</p>
+                                    <p>${x.rating} Stars</p>
                                 </div>
                                 <div>
                                     <img src="./source/data/icons/chat-right.svg" alt="Comment Icon" class="commentsIcon">
-                                    <p>${x.comments.length} Comments</p>
+                                    <p>${x.comments} Comments</p>
                                 </div>
                                 <br>
                                 <div class="tags">
@@ -424,7 +432,9 @@ const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData)
 let titleWords = getTitleWords(posts.storage);
 
-newPostsLoader(posts.storage);
+
+// newPostsLoader(posts.storage); json loader
+newPostsLoader(await apiCallz.fetchPaginatedPosts())
 
 // posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
 // posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
@@ -783,7 +793,7 @@ function getTitleWords(posts){
     return result;
 }
 
-let apiCallz = new apiCall();
+
 
 apiCallz.fetchPaginatedPosts();
 apiCallz.fetchDetailedPost();

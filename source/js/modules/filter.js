@@ -10,7 +10,7 @@ export let postsByAuthor = [];
 
 export function newPostsLoader(posts) {
     postService.selectedFilter = "newPostsLoader";
-    newestPosts = posts.slice().sort((a, b) => new Date(b.postingTime) - new Date(a.postingTime));
+    newestPosts = posts // .slice().sort((a, b) => new Date(b.postingTime) - new Date(a.postingTime));
     document.getElementById("contentPart").innerHTML = "";
     postService.renderPosts(newestPosts);
 }
