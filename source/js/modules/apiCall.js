@@ -1,10 +1,8 @@
 export class apiCall {
     async fetchPaginatedPosts(postFilter) {
-        if (postFilter.totalPages > 0 && postFilter.pageIndex < postFilter.totalPages) 
+        if (postFilter.totalPages > 0 && postFilter.pageIndex <= postFilter.totalPages) 
             postFilter.pageIndex ++;
-        
-        if (postFilter.totalPages === postFilter.pageIndex) 
-            return;
+
         console.log(JSON.stringify(postFilter)); // Optional: Logging filter before sending
 
         let pagiPostUrl = "https://localhost:7073/api/Posts";

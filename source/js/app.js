@@ -236,6 +236,7 @@ class PostService {
             });
         }
         renderSinglePost = (post) =>{
+            const imageSrc = `data:image/png;base64,${post.image}`; 
             window.scrollTo(0,0);
             postService.lastPageLoaded.push("post");
             this.loadMoreBtn.style.display = "none";
@@ -246,13 +247,13 @@ class PostService {
             this.result.innerHTML = `<div class="singleCard mb-3" id="singlePostId">
     <div class="row g-0">
       <div class="col-md-5">
-        <img src=${post.imgSrc} id="postImage" class="img-fluid rounded-start" alt="Relevant Picture">
+        <img src=${imageSrc} id="postImage" class="img-fluid rounded-start" alt="Relevant Picture">
       </div>
       <br>
       <div class="col-md-7">
         <div class="singleCard-body">
           <h2 class="card-title card-header"> ${post.title}</h2>
-          <small>Created by - <a style="color: #00b13d"  id="postAuthorId">${post.authorId.fullName()}</a> on ${post.postingTime}  </small><br>
+          <small>Created by - <a style="color: #00b13d"  id="${post.user.id}">${post.user.fullname}</a> on ${post.postingTime}  </small><br>
           <small>tags- ${post.tags}</small>
           <hr>
           <p class="singleCard-text">${post.text}</p>
@@ -261,7 +262,7 @@ class PostService {
         <br>
       <div id='addStarContainer'>
             <p>Did you like this post? 
-            <span  id='addStartOnPost'> Add -> <img id='starPostImg' src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon"></span>
+            <span  id='addStartOnPost'> Add -> <img id='starPostImg' src="./source/data/icons/star.svg" alt="Star Icon" class="starsIcon">${post.rating}</span>
             </p>
     </div>
       </div>
@@ -293,7 +294,7 @@ class PostService {
         <br>
         <br>
         
-        <div id="addedComments"> 
+        <div id="addedComments">
         </div>
         <!-- Add more comments here... -->
     </div>
@@ -313,7 +314,7 @@ class PostService {
             posts.storage[indexPost].addStar(modalService.currentUser.id);
         }
     })
-    posts.storage[this.indexOfPost].fillStar(modalService.currentUser.id);
+    // posts.storage[this.indexOfPost].fillStar(modalService.currentUser.id); Api Logic needed to check if user already liked the post
     document.getElementById("commentForm").addEventListener("submit",function(event){
         event.preventDefault();
         console.log("it kinda works")
@@ -327,14 +328,18 @@ class PostService {
         displayComments();
     });
     displayComments();
-    document.getElementById("postAuthorId").addEventListener('click',()=>{
-        postService.lastPageLoaded.push("author");
-        postService.lastAuthor = this.loadedSinglePost.authorId;
-        authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
-    });     
+    // document.getElementById("postAuthorId").addEventListener('click',()=>{  Router will take care of navigation history
+    //     postService.lastPageLoaded.push("author");
+    //     postService.lastAuthor = this.loadedSinglePost.authorId;
+    //     authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
+    // });     
 }
 
-        loadMore = async (posts) => {
+        loadMore = async () => {
+            if(postFilter.totalPages !== 0 && postFilter.pageIndex >= postFilter.totalPages){
+                console.log("No more posts!");
+                return;
+            }
             let result = await apiCallz.fetchPaginatedPosts(postFilter);
             postFilter.updateFilter(result.pageIndex, result.totalPages);
             this.renderPosts(result);
@@ -345,8 +350,8 @@ class PostService {
         }
     }
     
-    openPost (postId){
-        let post = posts.storage.find(x=> x.id == postId);
+    openPost = async(postId) =>{
+        let post =  await apiCallz.fetchDetailedPost(postId);
         this.loadedSinglePost = post;
         this.indexOfPost = posts.storage.indexOf(post);
         this.renderSinglePost(post);
