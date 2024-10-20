@@ -1,5 +1,5 @@
-import {postService,users,hideModal} from "../app.js";
-
+import {postService,users} from "../app.js";
+import {ModalService} from "./ModalService.js";
 export let taggedPosts = [];
 export let mostPopularPosts = [];
 export let oldPosts = [];
@@ -7,6 +7,7 @@ export let newestPosts = [];
 export let filteredPosts = [];
 export let postsByAuthor = [];
 
+const modalService = new ModalService();
 
 export function newPostsLoader(posts) {
     postService.selectedFilter = "newPostsLoader";
@@ -85,7 +86,7 @@ export function monthYear(posts, dateValue) {
 
     }
     else{// Render the filtered posts
-    hideModal('monthModal');
+    modalService.hideModal('monthModal');
     document.getElementById('contentPart').innerHTML = "";
     postService.renderPosts(monthYearPosts);
     }

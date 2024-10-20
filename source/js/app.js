@@ -8,29 +8,10 @@ import { aboutUsPageLoader } from "./modules/aboutUs.js";
 import { lightDarkChek } from "./modules/themeToggle.js";
 import {apiCall} from "./modules/apiCall.js";
 import { PostFilter } from "./modules/PostFilter.js";
-
+import { ModalService } from "./modules/ModalService.js";
 
 let apiCallz = new apiCall();
 
-
-class ModalService {
-    constructor(){
-        this.currentUser = this.removeSession();
-    }
-
-    emptySession(){
-        let user = users.emptyUser();
-        const {firstName, lastName, email, password, isSubscribed} = user;
-        console.log(`Current session user:
-        \nfirst name:${firstName}
-        \nlast name: ${lastName}
-        \nemail: ${email}
-        \npassword: ${password}
-        \nisSubscribed: ${isSubscribed}`);
-        return user;
-    }
-    removeSession = () => this.currentUser = this.emptySession();
-}
 class PostService {
     constructor(){
         this.logoBtn = document.getElementById('logoBtn');
@@ -192,7 +173,7 @@ class PostService {
         openedPostId = [];
         commentPostId = null;
         indexOfPost = null;
-
+        
         
 
         renderPosts = (posts) => {
@@ -350,24 +331,13 @@ class PostService {
         postService.lastPageLoaded.push("author");
         postService.lastAuthor = this.loadedSinglePost.authorId;
         authorPostsLoader(posts.storage, this.loadedSinglePost.authorId);
-    });
-// let testComment = document.getElementById("commentForm");
-
-// testComment.addEventListener("click", function (e) {
-//     e.preventDefault();
-//     const commentText = document.getElementById("commentText").value;
-//     const isAnonymous = document.getElementById("anonymous").checked;
-
-//     // Process the comment (you can send it to a server or handle it as needed)
-//     console.log("Comment:", commentText);
-//     console.log("Anonymous:", isAnonymous);
-// });
-// lightDarkChek();        
+    });     
 }
 
-        loadMore = (posts) => {
-            let postsToLoad = posts.filter(post => !this.loadedPosts.includes(post));
-            this.renderPosts(postsToLoad.slice(0, this.loadPosts));
+        loadMore = async (posts) => {
+            let result = await apiCallz.fetchPaginatedPosts(postFilter);
+            postFilter.updateFilter(result.pageIndex, result.totalPages);
+            this.renderPosts(result);
         }
     writePosts = (postData)=> {
         for (const item of postData) {
@@ -381,14 +351,18 @@ class PostService {
         this.indexOfPost = posts.storage.indexOf(post);
         this.renderSinglePost(post);
     }
+    
 } 
 let getPostId = function(){
-        let postId = this.getAttribute("value");
-        postService.openedPostId.push(postId);
-        postService.commentPostId = postId;
-        postService.selectedFilter = null;
-        postService.openPost(postId);
+    let postId = this.getAttribute("value");
+    postService.openedPostId.push(postId);
+    postService.commentPostId = postId;
+    postService.selectedFilter = null;
+    postService.openPost(postId);
 }
+
+
+
 loadMoreBtn.addEventListener("click", function () {
     console.log(postService.selectedFilter)
     if (postService.selectedFilter == "newPostsLoader") {
@@ -431,12 +405,15 @@ users.newUser("Test","Testing",'test@lala.com','123456');
 
 const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData)
-let titleWords = getTitleWords(posts.storage);
+// let titleWords = getTitleWords(posts.storage);
 
 const postFilter = new PostFilter();
 // newPostsLoader(posts.storage); json loader
 var result = await apiCallz.fetchPaginatedPosts(postFilter);
-newPostsLoader(result);
+newPostsLoader(result); 
+postFilter.updateFilter(result.pageIndex, result.totalPages);
+
+
 
 // posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
 // posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
@@ -513,26 +490,13 @@ function scrollFunction() {
   }
 }
 
-console.log(postData);
+
 export {postService,users};
 
 
 
 
 //display modal function
-function showModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.style.display = 'block';
-    setTimeout(() => modal.classList.add('show'), 10);
-}
-
-// hide modal function
-
-function hideModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('show');
-    setTimeout(() => modal.style.display = 'none', 500);
-}
 
 //sign up modal storing entered values
 document.getElementById('signUpForm').addEventListener('submit', function(event) {
@@ -724,8 +688,6 @@ updateNavbar();
 // displayComments();
 
 
-export{modalService,hideModal};
-
 
 document.getElementById("monthFilter").addEventListener("click",function(){
     showModal("monthModal");
@@ -780,22 +742,17 @@ function displayComments() {
     }
     
 }
-function getTitleWords(posts){
-    let result = [];
+// function getTitleWords(posts){
+//     let result = [];
 
-    posts.forEach(x => {
-        let words = x.title.split(' ');
-        for(let i = 0; i < words.length; i++){
-            if (!result.includes(words[i].toLowerCase())){
-                result.push(words[i].toLowerCase());
-            }
-        }
+//     posts.forEach(x => {
+//         let words = x.title.split(' ');
+//         for(let i = 0; i < words.length; i++){
+//             if (!result.includes(words[i].toLowerCase())){
+//                 result.push(words[i].toLowerCase());
+//             }
+//         }
 
-    })
-    return result;
-}
-
-
-
-apiCallz.fetchPaginatedPosts();
-apiCallz.fetchDetailedPost();
+//     })
+//     return result;
+// }
