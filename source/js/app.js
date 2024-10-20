@@ -7,6 +7,7 @@ import { mostPopularPostsLoader, newPostsLoader, oldPostsLoader, showTagPosts, t
 import { aboutUsPageLoader } from "./modules/aboutUs.js";   
 import { lightDarkChek } from "./modules/themeToggle.js";
 import {apiCall} from "./modules/apiCall.js";
+import { PostFilter } from "./modules/PostFilter.js";
 
 
 let apiCallz = new apiCall();
@@ -432,9 +433,10 @@ const postData = await getDataFromJson(postJsonPath);
 postService.writePosts(postData)
 let titleWords = getTitleWords(posts.storage);
 
-
+const postFilter = new PostFilter();
 // newPostsLoader(posts.storage); json loader
-newPostsLoader(await apiCallz.fetchPaginatedPosts())
+var result = await apiCallz.fetchPaginatedPosts(postFilter);
+newPostsLoader(result);
 
 // posts.newPost("source/data/postImgs/3.jpg", "This man predicts stock prices like a fortune teller.", "Pay for more", ["stock"], users.storage[30], new Date(1992,11,20,8,30));
 // posts.newPost("source/data/postImgs/20.jpg", "How this professor teaches AI and thinks about the future of human creativity", "Pay for more", ["AI"], users.storage[50]);
